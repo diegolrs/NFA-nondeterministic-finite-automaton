@@ -102,6 +102,10 @@ class MyList{
             return true;
         }
 
+        bool Push(int value)
+        {
+            return AddLast(value);
+        }
 
         bool AddLast(int value){
             Node *newNode = new Node();
@@ -158,16 +162,29 @@ class MyList{
             return value_removido;
         }
 
-        int RemoveAt(int pos){
-            if (IsEmpty()){
-                return false;
+        int RemoveAt(int pos)
+        {
+            Node *aux = head;
+            int value_removed;
+
+            for (int i = 0; i < pos-1; i++){
+                aux = aux->getNextNode();
             }
-            if (pos==1){
-                return RemoveFirst();
-            }else if (pos == Length()){
-                return RemoveLast();
+            if (aux == NULL){
+                return -1;
             }
+
+            value_removed = aux->getContent();
+            aux->getPriorNode()->setNextNode(aux->getNextNode());
+            aux->getNextNode()->setPriorNode(aux->getPriorNode());
+
+            nElements--;
+            delete aux;
+            return value_removed;
         }
-        
 };
 
+int main()
+{
+    MyList *l = new MyList();
+}
