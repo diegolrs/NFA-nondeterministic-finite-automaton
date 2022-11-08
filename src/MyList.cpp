@@ -157,10 +157,15 @@ int MyList::RemoveAt(int pos)
         return -1;
     }
 
+    if(Length() == 1 || pos == 0)
+        return RemoveFirst();
+    else if(pos == Length() -1)
+        return RemoveLast();
+
     Node *aux = head;
     int value_removed;
 
-    for (int i = 0; i < pos, aux != NULL; i++)
+    for (int i = 1; i <= pos; i++)
     {
         aux = aux->getNextNode();
     }
@@ -170,8 +175,12 @@ int MyList::RemoveAt(int pos)
     }
 
     value_removed = aux->getContent();
-    aux->getPriorNode()->setNextNode(aux->getNextNode());
-    aux->getNextNode()->setPriorNode(aux->getPriorNode());
+
+    if(aux->getPriorNode() != NULL)
+        aux->getPriorNode()->setNextNode(aux->getNextNode());
+
+    if(aux->getNextNode() != NULL)
+        aux->getNextNode()->setPriorNode(aux->getPriorNode());
 
     nElements--;
     delete aux;

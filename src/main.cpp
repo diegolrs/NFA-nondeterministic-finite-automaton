@@ -16,10 +16,11 @@ int main()
     //    cout << l->GetIndexOf(i) << " ";
 
     int n = 5;
-    for(int ni = 0; ni < n; ni++)
+    for(int ni = n; ni > 0; ni--)
         //l->RemoveFirst();
         //l->RemoveLast();
-        l->RemoveAt(1);
+        //l->RemoveAt(ni);
+        l->RemoveAt(3);
 
     cout << "ja removi" << std::endl;
 
