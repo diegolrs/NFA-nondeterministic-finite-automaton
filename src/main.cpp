@@ -6,10 +6,10 @@ using namespace std;
 
 int main()
 {
-    MyList *l = new MyList();
+    MyList<string> *l = new MyList<string>();
 
     for(int i = 0; i < 10; i++)
-        l->Push(i);
+        l->Push(to_string(i) + "str");
         //l->PushOnBeginning(i);
 
     //for(int i = 0; i < 50; i++)
