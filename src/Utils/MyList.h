@@ -3,7 +3,7 @@
 #include <iostream>
 #include "Node.h"
 
-#define DEFAULT_RETURN NULL
+#define DEFAULT_RETURN T()
 
 template <typename T>
 class MyList
