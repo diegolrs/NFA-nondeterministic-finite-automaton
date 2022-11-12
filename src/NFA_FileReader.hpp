@@ -3,8 +3,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "Exceptions/NFA_Exceptions.h"
-#include "Utils/StringExtensions.h"
+#include "Exceptions/NFA_Exceptions.hpp"
+#include "Utils/StringExtensions.hpp"
 
 namespace NFA_FileReader
 {

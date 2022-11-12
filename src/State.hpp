@@ -1,9 +1,9 @@
 #pragma once
 
 #include <string>
-#include "Utils/MyList.h"
-#include "State.fwd.h"
-#include "Transition.h"
+#include "Utils/MyList.hpp"
+#include "State.fwd.hpp"
+#include "Transition.hpp"
 
 class State
 {

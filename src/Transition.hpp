@@ -2,9 +2,9 @@
 
 #include <iostream>
 #include <string>
-#include "Symbol.h"
-#include "State.fwd.h"
-#include "Transition.fwd.h"
+#include "Symbol.hpp"
+#include "State.fwd.hpp"
+#include "Transition.fwd.hpp"
 
 class Transition
 {

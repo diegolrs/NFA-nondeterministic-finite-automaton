@@ -1,7 +1,7 @@
 #pragma once
 
 #include <iostream>
-#include "Node.h"
+#include "Node.hpp"
 
 #define DEFAULT_RETURN T()
 

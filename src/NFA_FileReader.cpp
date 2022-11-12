@@ -1,4 +1,4 @@
-#include "NFA_FileReader.h"
+#include "NFA_FileReader.hpp"
 
 void NFA_FileReader::ReadFile(std::string address)
 {

@@ -1,16 +1,16 @@
 #include <iostream>
 #include <string>
-#include "Utils/MyList.h"
-#include "NFA_FileReader.h"
+#include "Utils/MyList.hpp"
+#include "NFA_FileReader.hpp"
+
+#include "Symbol.hpp"
+#include "Transition.hpp"
+#include "State.hpp"
 
 using namespace std;
 using namespace NFA_FileReader;
 
 const std::string FILE_ADDRESS = "../afn2.txt";
-
-#include "Symbol.h"
-#include "Transition.h"
-#include "State.h"
 
 int main()
 {
