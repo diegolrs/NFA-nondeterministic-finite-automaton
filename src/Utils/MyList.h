@@ -30,9 +30,9 @@ class MyList
 
 template <typename T>
 MyList<T>::MyList(){
-    this->head = NULL;
-    this->tail = NULL;
-    this->nElements = 0;
+    head = NULL;
+    tail = NULL;
+    nElements = 0;
 }
 
 template <typename T>
@@ -84,6 +84,7 @@ T MyList<T>::At(int pos)
     for (int i = 1; i <= pos; i++){
         aux = aux->getNextNode();
     }
+    
     return aux->getContent(); 
 }
 

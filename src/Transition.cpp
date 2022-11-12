@@ -1,19 +1,24 @@
-#include <iostream>
-#include <string>
-#include "Symbol.h"
-#include "State.h"
+#include "Transition.h"
 
-class Transition
+Transition::Transition()
 {
-    public:
-        Transition(State* current, State* next, Symbol* transitionSymbol)
-        {
-            _current = current;
-            _next = next;
-            _transitionSymbol = transitionSymbol;
-        }
-    private:
-        State* _current;
-        State* _next;
-        Symbol* _transitionSymbol;
-};
+    this->_destin = nullptr;
+    this->_transitionSymbol = nullptr;
+}
+
+
+Transition::Transition(State* destin, Symbol* transitionSymbol)
+{
+    this->_destin = destin;
+    this->_transitionSymbol = transitionSymbol;
+}
+
+Symbol* Transition::GetTransitionSymbol()
+{
+    return this->_transitionSymbol;
+}
+
+State* Transition::GetDestinationState()
+{
+    return this->_destin;
+}
