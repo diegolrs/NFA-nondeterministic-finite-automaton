@@ -19,8 +19,8 @@ int main()
     State* q0 = new State("q0");
     State* q1 = new State("q1");
     Symbol* a = new Symbol("a");
-    Transition t =  Transition(q1, a);
-    Transition t2 = Transition(q1, new Symbol());
+    Transition* t =  new Transition(q1, a);
+    Transition* t2 = new Transition(q1, new Symbol());
 
     q0->AddTransition(t);
     q0->AddTransition(t2);

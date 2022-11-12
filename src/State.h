@@ -11,11 +11,11 @@ class State
         State();
         State(std::string name, bool isAFinalState=false);
         std::string GetName();
-        void AddTransition(Transition t);
+        void AddTransition(Transition* t);
         void ListTransitions();
         bool IsAFinalState();
     private:
         std::string _name;
         bool _isAFinalState;
-        MyList<Transition>* _transitions;
+        MyList<Transition*>* _transitions;
 };
