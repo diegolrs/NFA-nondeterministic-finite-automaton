@@ -14,6 +14,7 @@ class MyList
         int nElements;
     public:
         MyList();
+        ~MyList();
 
         bool IsEmpty();
         bool Contains(T value);
@@ -26,13 +27,21 @@ class MyList
         T RemoveFirst();
         T RemoveLast();
         T RemoveAt(int pos);
+        void Clear();
 };
 
 template <typename T>
-MyList<T>::MyList(){
+MyList<T>::MyList()
+{
     head = NULL;
     tail = NULL;
     nElements = 0;
+}
+
+template <typename T>
+MyList<T>::~MyList()
+{
+    this->Clear();
 }
 
 template <typename T>
@@ -225,4 +234,18 @@ T MyList<T>::RemoveAt(int pos)
     nElements--;
     delete aux;
     return value_removed;
+}
+
+template <typename T>
+void MyList<T>::Clear()
+{
+    Node<T>* currentNode = this->head;
+
+    while (currentNode)
+    {
+        Node<T>* nextNode = currentNode->getNextNode();
+        delete currentNode;
+        currentNode = nextNode;
+        nElements--;
+    }
 }
