@@ -5,6 +5,10 @@
 #include <string>
 #include "Exceptions/NFA_Exceptions.hpp"
 #include "Utils/StringExtensions.hpp"
+#include "Utils/MyList.hpp"
+//#include "../Symbol.hpp"
+//#include "../State.hpp"
+//#include "../Transition.hpp"
 
 namespace NFA_FileReader
 {
@@ -17,6 +21,12 @@ namespace NFA_FileReader
 
     void ReadFile(std::string address);
 
+    // MyList<Symbol> ReadAlphabet(std::string alphabetLine);
+    // MyList<State> ReadStates(std::string statesLine);
+    // State ReadInitialState(std::string initialStateLine);
+    // MyList<State> ReadEndStates(std::string endStatesLine);
+    // MyList<Transition> ReadTransitions(std::ifstream *myFile);
+    
     void ReadAlphabet(std::string alphabetLine);
     void ReadStates(std::string statesLine);
     void ReadInitialState(std::string initialStateLine);
