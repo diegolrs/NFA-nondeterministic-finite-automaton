@@ -1,5 +1,7 @@
 #pragma once
 
+#define DEFAULT_VALUE T()
+
 template <typename T>
 class Node
 {
@@ -8,6 +10,7 @@ class Node
         Node<T> *NextNode;
         Node<T> *PriorNode;
     public:
+        Node<T>();
         T getContent();
         void setContent(T value);
         Node *getNextNode();
@@ -15,6 +18,14 @@ class Node
         Node *getPriorNode();
         void setPriorNode(Node *priorNode);
 };
+
+template <typename T>
+Node<T>::Node()
+{
+    this->content = DEFAULT_VALUE;
+    this->NextNode = nullptr;
+    this->PriorNode = nullptr;
+}
 
 template <typename T>
 T Node<T>::getContent(){
