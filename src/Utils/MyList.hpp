@@ -4,6 +4,7 @@
 #include "Node.hpp"
 
 #define DEFAULT_RETURN T()
+#define OUT_OF_INDEX -1
 
 template <typename T>
 class MyList
@@ -59,7 +60,7 @@ int MyList<T>::GetIndexOf(T value)
 {
     if (IsEmpty())
     {
-        return DEFAULT_RETURN;
+        return OUT_OF_INDEX;
     }
 
     Node<T> *aux = head;
