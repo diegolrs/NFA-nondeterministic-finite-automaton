@@ -1,8 +1,11 @@
 #include "Symbol.hpp"
 
+//const std::string Symbol::EPSILON = "epsilon";
+
 Symbol::Symbol()
 {
-    _value = EPSILON;
+    _value = "batata";
+    //_value = Symbol::EPSILON;
 }
 
 Symbol::Symbol(std::string value)

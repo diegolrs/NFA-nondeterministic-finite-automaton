@@ -43,6 +43,6 @@ void TestStrSplit()
 int main()
 {
     //TestTransitions();
-    //TestNFAReader();
-    TestStrSplit();
+    TestNFAReader();
+    //TestStrSplit();
 }

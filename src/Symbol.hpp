@@ -2,10 +2,10 @@
 
 #include <string>
 
-struct Symbol
+class Symbol
 {
     public:
-        const std::string EPSILON = "epsilon";
+        //static const std::string EPSILON;
 
         Symbol();
         Symbol(std::string value);
