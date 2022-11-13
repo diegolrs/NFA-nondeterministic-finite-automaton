@@ -98,13 +98,14 @@ T MyList<T>::At(int pos)
 }
 
 template <typename T>
-bool MyList<T>::Contains(T value){
+bool MyList<T>::Contains(T value)
+{
     Node<T> *aux = head;
     if (IsEmpty()){
         return false;
     }
 
-    while (aux->getNextNode() != NULL){
+    while (aux != NULL){
         if (aux->getContent() == value){
             return true;
         }
