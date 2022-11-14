@@ -28,9 +28,9 @@ namespace StringExtensions
         return text;
     }
 
-    inline MyList<std::string> Split(std::string text, std::string delimiter)
+    inline MyList<std::string>* Split(std::string text, std::string delimiter)
     {
-        MyList<std::string> l = MyList<std::string>();
+        MyList<std::string>* l = new MyList<std::string>();
 
         char *dup = (char*) text.c_str(); // duplicating string as char*
         const char *delimiter_ptr = delimiter.c_str();
@@ -41,7 +41,7 @@ namespace StringExtensions
             // Convert to string and push on list
             std::string myString;
             myString.assign(ptr);
-            l.Push(myString); 
+            l->Push(myString); 
 
             ptr = strtok (NULL, delimiter_ptr); 
         }

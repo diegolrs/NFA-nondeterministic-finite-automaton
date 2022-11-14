@@ -9,10 +9,6 @@
 template <typename T>
 class MyList
 {
-    private:
-        Node<T> *head;
-        Node<T> *tail;
-        int nElements;
     public:
         MyList();
         ~MyList();
@@ -21,7 +17,9 @@ class MyList
         bool Contains(T value);
         int Length();
         int GetIndexOf(T value);   
+
         T At(int pos);    
+        void SetAt(int pos, T value);
 
         void PushOnBeginning(T value);
         void Push(T value);
@@ -29,6 +27,16 @@ class MyList
         T RemoveLast();
         T RemoveAt(int pos);
         void Clear();
+
+    private:
+        Node<T> *head;
+        Node<T> *tail;
+        int nElements;
+
+        // Use when you want to check the copy value, not the 
+        // pointer address, case T is a pointer
+        int GetIndexOf_IgnorePointerAddress(T value);
+        bool Contains_IgnorePointerAddress(T value);
 };
 
 template <typename T>
@@ -58,27 +66,50 @@ int MyList<T>::Length(){
 template <typename T>
 int MyList<T>::GetIndexOf(T value)
 {
+    if(std::is_pointer<T>::value)
+        return GetIndexOf_IgnorePointerAddress(value);
+
     if (IsEmpty())
     {
         return OUT_OF_INDEX;
     }
 
     Node<T> *aux = head;
-    int cont = -1;
 
-    while (aux != NULL)
+    for(int cont = 0; aux != NULL; cont++)
     {
-        cont++;
-
         if (aux->getContent() == value)
         {
-            break;
+            return cont;
         }
 
         aux = aux->getNextNode();   
     }
     
-    return cont;
+    return OUT_OF_INDEX;;
+}
+
+template <typename T>
+int MyList<T>::GetIndexOf_IgnorePointerAddress(T value)
+{
+    if (IsEmpty())
+    {
+        return OUT_OF_INDEX;
+    }
+
+    Node<T> *aux = head;
+
+    for(int cont = 0; aux != NULL; cont++)
+    {
+        if (*(aux->getContent()) == *value)
+        {
+            return cont;
+        }
+
+        aux = aux->getNextNode();   
+    }
+    
+    return OUT_OF_INDEX;;
 }
 
 template <typename T>
@@ -99,8 +130,29 @@ T MyList<T>::At(int pos)
 }
 
 template <typename T>
+void MyList<T>::SetAt(int pos, T value)
+{
+    if (IsEmpty() || pos < 0 || pos >= Length())
+    {
+        return;
+    }
+
+    Node<T> *aux = head;
+
+    for (int i = 1; i <= pos; i++)
+    {
+        aux = aux->getNextNode();
+    }
+    
+    aux->setContent(value); 
+}
+
+template <typename T>
 bool MyList<T>::Contains(T value)
 {
+    if(std::is_pointer<T>::value)
+        return Contains_IgnorePointerAddress(value);
+
     Node<T> *aux = head;
     if (IsEmpty()){
         return false;
@@ -108,6 +160,23 @@ bool MyList<T>::Contains(T value)
 
     while (aux != NULL){
         if (aux->getContent() == value){
+            return true;
+        }
+        aux = aux->getNextNode();
+    }
+    return false;
+}
+
+template <typename T>
+bool MyList<T>::Contains_IgnorePointerAddress(T value)
+{
+    Node<T> *aux = head;
+    if (IsEmpty()){
+        return false;
+    }
+
+    while (aux != NULL){
+        if (*(aux->getContent()) == *value){
             return true;
         }
         aux = aux->getNextNode();

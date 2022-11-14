@@ -4,15 +4,8 @@
 class FileNotFoundException : Exception
 {
     public:
-        FileNotFoundException(std::string address)
-        {
-            _address = address;
-        }
-
-        std::string GetMessage()
-        { 
-            return "File was not found at address " + _address;
-        }
+        FileNotFoundException(std::string address);
+        std::string GetMessage();
     private:
         std::string _address;
 };

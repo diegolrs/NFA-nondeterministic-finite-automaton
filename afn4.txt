@@ -1,0 +1,13 @@
+alfabeto=0,1
+estados=PP,IP,II,PI
+inicial=PP
+final=PP
+transicoes
+PP,IP,0
+IP,PP,0
+PP,PI,1
+PI,PP,1
+PI,II,0
+II,PI,0
+II,IP,1
+IP,II,1

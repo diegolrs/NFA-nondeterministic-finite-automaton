@@ -11,6 +11,8 @@ class Symbol
         Symbol(std::string value);
         std::string GetValue();
         bool IsEquals(Symbol s);
+
+        bool operator==(Symbol other);
     private:
         std::string _value;
 };

@@ -22,3 +22,8 @@ bool Symbol::IsEquals(Symbol s)
 {
     return _value == s.GetValue();
 }
+
+bool Symbol::operator==(Symbol other)
+{
+    return (this->GetValue() == other.GetValue());
+}
