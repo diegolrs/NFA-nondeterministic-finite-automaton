@@ -1,16 +1,18 @@
 #include <iostream>
 #include <string>
 #include "Utils/MyList.hpp"
-#include "NFA_FileReader.hpp"
+#include "DFA_FileReader.hpp"
+#include "DFA_Machine.hpp"
+#include "Exceptions/Exception.hpp"
 
 #include "Symbol.hpp"
 #include "Transition.hpp"
 #include "State.hpp"
 
 using namespace std;
-using namespace NFA_FileReader;
+using namespace DFA_FileReader;
 
-const std::string FILE_ADDRESS = "../afn2.txt";
+const std::string FILE_ADDRESS = "../afn3.txt";
 
 void TestTransitions()
 {
@@ -22,27 +24,42 @@ void TestTransitions()
 
     q0->AddTransition(t);
     q0->AddTransition(t2);
-    q0->ListTransitions();
+    cout << q0->GetTransitionsStr();
 }
 
-void TestNFAReader()
+void TestDFAReader()
 {
-    NFA_FileReader::ReadFile(FILE_ADDRESS);
+    try
+    {
+        DFA_ReadedData data =  DFA_FileReader::ReadFile(FILE_ADDRESS);
+        DFA_Machine* machine = new DFA_Machine(data);
+        cout << machine->ToString();
+    }
+    catch(FileNotFoundException e)
+    {
+        std::cerr << e.GetMessage() << '\n';
+        exit(-1);
+    }
+    catch(InvalidTransitionFormatException e)
+    {
+        std::cerr << e.GetMessage() << '\n';
+        exit(-1);
+    }
 }
 
 #include "Utils/StringExtensions.hpp"
 void TestStrSplit()
 {
     string b = "É parte da cura o desejo de ser curado.";
-    MyList<string> l = StringExtensions::Split(b, " ");
+    MyList<string>* l = StringExtensions::Split(b, " ");
 
-    for(int i = 0; i < l.Length(); i++)
-        cout << l.At(i) << endl;
+    for(int i = 0; i < l->Length(); i++)
+        cout << l->At(i) << endl;
 }
 
 int main()
 {
     //TestTransitions();
-    TestNFAReader();
+    TestDFAReader();
     //TestStrSplit();
 }

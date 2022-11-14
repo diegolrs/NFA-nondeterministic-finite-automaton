@@ -12,8 +12,13 @@ class State
         State(std::string name, bool isAFinalState=false);
         std::string GetName();
         void AddTransition(Transition* t);
-        void ListTransitions();
+        std::string GetTransitionsStr();
+
         bool IsAFinalState();
+        void SetAsFinalState(bool value);
+
+        bool operator==(State other);
+        bool operator==(State* other);
     private:
         std::string _name;
         bool _isAFinalState;

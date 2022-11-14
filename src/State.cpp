@@ -24,17 +24,39 @@ void State::AddTransition(Transition* t)
     _transitions->Push(t);
 }
 
-void State::ListTransitions()
+std::string State::GetTransitionsStr()
 {
+    std::string s = "";
+
     for(int i = 0; i < _transitions->Length(); i++)
     {
-        std::cout << this->GetName() << " -> ";
-        std::cout << _transitions->At(i)->GetTransitionSymbol()->GetValue() << " -> ";
-        std::cout << _transitions->At(i)->GetDestinationState()->GetName() << std::endl;
+        s += this->GetName() + "->";
+        s += _transitions->At(i)->GetTransitionSymbol()->GetValue() + "->";
+        s += _transitions->At(i)->GetDestinationState()->GetName() + '\n';
     }
+
+    return s;
 }
 
 bool State::IsAFinalState()
 {
     return _isAFinalState;
+}
+
+void State::SetAsFinalState(bool value)
+{
+    _isAFinalState = value;
+}
+
+bool State::operator==(State other)
+{
+    return this->GetName() == other.GetName();
+}
+
+bool State::operator==(State* other)
+{
+    std::string s1 = GetName();
+    std::string s2 = other->GetName();
+
+    return s1 == s2;
 }
