@@ -7,6 +7,7 @@ DFA_Machine::DFA_Machine(DFA_ReadedData data)
     states = new MyList<State*>();         
     endStates = new MyList<State*>();
     transitions = new MyList<Transition*>();
+    processChain = new MyList<std::string>();
     
     // Initial state
     initialState = new State(data.initialState);
@@ -61,6 +62,8 @@ DFA_Machine::DFA_Machine(DFA_ReadedData data)
         transitions->Push(_transition);
         _init->AddTransition(_transition);
     }
+
+    currentState = initialState;
 }
 
 std::string DFA_Machine::ToString()
@@ -91,3 +94,37 @@ std::string DFA_Machine::ToString()
 
     return s;
 }
+
+bool DFA_Machine::Process(Symbol sim){
+    if (currentState == nullptr){
+        return false;
+    }
+    State* oldState = currentState;
+    std::string msg = "";
+    if(currentState->CanProcessSymbol(sim)){
+        currentState = currentState->Process(sim);
+
+        msg = oldState ->GetName() + "->" + sim.GetValue() + "->" + currentState->GetName() + "\n";
+        processChain->Push(msg);
+        return true;
+    }else{
+        msg = oldState ->GetName() + "->" + sim.GetValue() + "->" + currentState->GetName() + " Crash " +"\n";
+        processChain->Push(msg);
+        currentState = nullptr;
+        return false;
+    }
+    
+}
+
+bool DFA_Machine::IsOnFinalState(){
+    return currentState != nullptr && endStates->Contains(currentState);
+}
+
+std::string DFA_Machine::PrintProcessChain(){
+    std::string msg = "";
+    for (int i = 0; i < processChain->Length(); i++){
+        msg += processChain->At(i);
+    }
+    return msg;
+}
+

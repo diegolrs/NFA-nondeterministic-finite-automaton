@@ -19,6 +19,9 @@ class State
 
         bool operator==(State other);
         bool operator==(State* other);
+
+        bool CanProcessSymbol(Symbol s);
+        State* Process(Symbol s);
     private:
         std::string _name;
         bool _isAFinalState;

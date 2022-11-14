@@ -60,3 +60,21 @@ bool State::operator==(State* other)
 
     return s1 == s2;
 }
+
+bool State::CanProcessSymbol(Symbol s){
+    for(int i = 0; i < _transitions->Length(); i++){
+        if (_transitions->At(i)->GetTransitionSymbol()->IsEquals(s)){
+            return true;
+        }
+    }
+    return false;
+}
+
+State* State::Process(Symbol s){
+    for(int i = 0; i < _transitions->Length(); i++){
+        if (_transitions->At(i)->GetTransitionSymbol()->IsEquals(s)){
+            return _transitions->At(i)->GetDestinationState();
+        }
+    }
+    return nullptr;
+}
