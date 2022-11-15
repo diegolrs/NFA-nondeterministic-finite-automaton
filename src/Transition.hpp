@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <string>
-#include "Symbol.hpp"
+#include "AlphabetSymbol.hpp"
 #include "State.fwd.hpp"
 #include "Transition.fwd.hpp"
 
@@ -10,10 +10,10 @@ class Transition
 {
     public:
         Transition();
-        Transition(State* destin, Symbol* transitionSymbol);
-        Symbol* GetTransitionSymbol();
+        Transition(State* destin, AlphabetSymbol* transitionSymbol);
+        AlphabetSymbol* GetTransitionSymbol();
         State* GetDestinationState();
     private:
         State* _destin;
-        Symbol* _transitionSymbol;
+        AlphabetSymbol* _transitionSymbol;
 };

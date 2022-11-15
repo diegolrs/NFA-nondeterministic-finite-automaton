@@ -43,11 +43,6 @@ bool State::IsAFinalState()
     return _isAFinalState;
 }
 
-void State::SetAsFinalState(bool value)
-{
-    _isAFinalState = value;
-}
-
 bool State::operator==(State other)
 {
     return this->GetName() == other.GetName();
@@ -61,7 +56,7 @@ bool State::operator==(State* other)
     return s1 == s2;
 }
 
-bool State::CanProcessSymbol(Symbol s){
+bool State::CanProcessSymbol(AlphabetSymbol s){
     for(int i = 0; i < _transitions->Length(); i++){
         if (_transitions->At(i)->GetTransitionSymbol()->IsEquals(s)){
             return true;
@@ -70,11 +65,18 @@ bool State::CanProcessSymbol(Symbol s){
     return false;
 }
 
-State* State::Process(Symbol s){
+State* State::ProcessSymbol(AlphabetSymbol s){
     for(int i = 0; i < _transitions->Length(); i++){
         if (_transitions->At(i)->GetTransitionSymbol()->IsEquals(s)){
             return _transitions->At(i)->GetDestinationState();
         }
     }
+    return nullptr;
+}
+
+State* State::ProcessEpsilon()
+{
+    /* TODO: Add ProcessEpsilon Code*/
+    std::cout << "State->ProcessEpsilon() was not initialized" << std::endl;
     return nullptr;
 }

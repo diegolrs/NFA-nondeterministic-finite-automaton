@@ -27,16 +27,10 @@ class MyList
         T RemoveLast();
         T RemoveAt(int pos);
         void Clear();
-
     private:
         Node<T> *head;
         Node<T> *tail;
         int nElements;
-
-        // Use when you want to check the copy value, not the 
-        // pointer address, case T is a pointer
-        int GetIndexOf_IgnorePointerAddress(T value);
-        bool Contains_IgnorePointerAddress(T value);
 };
 
 template <typename T>
@@ -66,9 +60,6 @@ int MyList<T>::Length(){
 template <typename T>
 int MyList<T>::GetIndexOf(T value)
 {
-    if(std::is_pointer<T>::value)
-        return GetIndexOf_IgnorePointerAddress(value);
-
     if (IsEmpty())
     {
         return OUT_OF_INDEX;
@@ -79,29 +70,6 @@ int MyList<T>::GetIndexOf(T value)
     for(int cont = 0; aux != NULL; cont++)
     {
         if (aux->getContent() == value)
-        {
-            return cont;
-        }
-
-        aux = aux->getNextNode();   
-    }
-    
-    return OUT_OF_INDEX;;
-}
-
-template <typename T>
-int MyList<T>::GetIndexOf_IgnorePointerAddress(T value)
-{
-    if (IsEmpty())
-    {
-        return OUT_OF_INDEX;
-    }
-
-    Node<T> *aux = head;
-
-    for(int cont = 0; aux != NULL; cont++)
-    {
-        if (*(aux->getContent()) == *value)
         {
             return cont;
         }
@@ -150,9 +118,6 @@ void MyList<T>::SetAt(int pos, T value)
 template <typename T>
 bool MyList<T>::Contains(T value)
 {
-    if(std::is_pointer<T>::value)
-        return Contains_IgnorePointerAddress(value);
-
     Node<T> *aux = head;
     if (IsEmpty()){
         return false;
@@ -160,23 +125,6 @@ bool MyList<T>::Contains(T value)
 
     while (aux != NULL){
         if (aux->getContent() == value){
-            return true;
-        }
-        aux = aux->getNextNode();
-    }
-    return false;
-}
-
-template <typename T>
-bool MyList<T>::Contains_IgnorePointerAddress(T value)
-{
-    Node<T> *aux = head;
-    if (IsEmpty()){
-        return false;
-    }
-
-    while (aux != NULL){
-        if (*(aux->getContent()) == *value){
             return true;
         }
         aux = aux->getNextNode();

@@ -3,41 +3,33 @@
 //Deterministic Finite Automaton Machine
 DFA_Machine::DFA_Machine(DFA_ReadedData data)
 {
-    alphabet = new MyList<Symbol*>();
-    states = new MyList<State*>();         
-    endStates = new MyList<State*>();
+    alphabet = new MyList<AlphabetSymbol*>();
+    states = new MyList<State*>();      
     transitions = new MyList<Transition*>();
     processChain = new MyList<std::string>();
-    
-    // Initial state
-    initialState = new State(data.initialState);
-    states->Push(initialState);
+    trapState = new State(TRAP_STATE_NAME);
 
     // Symbols
     for(int i = 0; i < data.alphabet->Length(); i++)
     {
-        Symbol* _s = new Symbol(data.alphabet->At(i));
+        AlphabetSymbol* _s = new AlphabetSymbol(data.alphabet->At(i));
         alphabet->Push(_s);
-    }
-
-    // End States 
-    for(int i = 0; i < data.endStates->Length(); i++)
-    {
-        State* _s = new State(data.endStates->At(i));
-        endStates->Push(_s);
     }
 
     // All States
     for(int i = 0; i < data.states->Length(); i++)
     {
-        State* _s = new State(data.states->At(i));
-        _s->SetAsFinalState(endStates->Contains(_s));
+        std::string stateData = data.states->At(i);
+        bool isAFinalState = data.endStates->Contains(stateData);
+        bool isTheInitialState = stateData == data.initialState;
 
-        // Avoid duplicated states on list
-        if(!states->Contains(_s))
-        {
-            states->Push(_s);
-        }
+        State* _state = new State(stateData, isAFinalState);
+
+        if(!ContainsState(_state))
+            states->Push(_state);
+
+        // Initial State
+        initialState = isTheInitialState ? _state : initialState;
     }
 
     // Transition
@@ -45,9 +37,9 @@ DFA_Machine::DFA_Machine(DFA_ReadedData data)
     {
         Transition_ReadedData _tmp = data.transitions->At(i);
 
-        int initIndex = states->GetIndexOf(new State(_tmp.initialState));
-        int destinIndex = states->GetIndexOf(new State(_tmp.destinState));
-        int symbolIndex = alphabet->GetIndexOf(new Symbol(_tmp.transitionSymbol));
+        int initIndex = IndexOfState(new State(_tmp.initialState));
+        int destinIndex = IndexOfState(new State(_tmp.destinState));
+        int symbolIndex = IndexOfSymbol(new AlphabetSymbol(_tmp.transitionSymbol));
 
         if(initIndex == OUT_OF_INDEX || destinIndex == OUT_OF_INDEX || symbolIndex == OUT_OF_INDEX)
         {
@@ -55,7 +47,7 @@ DFA_Machine::DFA_Machine(DFA_ReadedData data)
         }
 
         State* _destin = states->At(destinIndex);
-        Symbol* _symbol =  alphabet->At(symbolIndex);
+        AlphabetSymbol* _symbol =  alphabet->At(symbolIndex);
         State* _init = states->At(initIndex);
 
         Transition* _transition = new Transition(_destin, _symbol);
@@ -82,8 +74,11 @@ std::string DFA_Machine::ToString()
     s += initialState->GetName() + " ";   
 
     s += "\n-----End States-----\n";
-    for(int i = 0; i < endStates->Length(); i++)
-        s += endStates->At(i)->GetName() + " ";
+    for(int i = 0; i < states->Length(); i++)
+    {
+        if(states->At(i)->IsAFinalState())
+            s += states->At(i)->GetName() + " ";
+    }
 
     s += "\n-----Transitions-----\n";
     for(int i = 0; i < states->Length(); i++)
@@ -95,32 +90,41 @@ std::string DFA_Machine::ToString()
     return s;
 }
 
-bool DFA_Machine::Process(Symbol sim){
-    if (currentState == nullptr){
-        return false;
+bool DFA_Machine::ContainsState(State* s)
+{
+    for(int i = 0; i < states->Length(); i++)
+    {
+        if(states->At(i)->GetName() == s->GetName())
+            return true;
     }
-    State* oldState = currentState;
-    std::string msg = "";
-    if(currentState->CanProcessSymbol(sim)){
-        currentState = currentState->Process(sim);
 
-        msg = oldState ->GetName() + "->" + sim.GetValue() + "->" + currentState->GetName() + "\n";
-        processChain->Push(msg);
-        return true;
-    }else{
-        msg = oldState ->GetName() + "->" + sim.GetValue() + "->" + currentState->GetName() + " Crash " +"\n";
-        processChain->Push(msg);
-        currentState = nullptr;
-        return false;
-    }
-    
+    return false;
 }
 
-bool DFA_Machine::IsOnFinalState(){
-    return currentState != nullptr && endStates->Contains(currentState);
+int DFA_Machine::IndexOfState(State* s)
+{
+    for(int i = 0; i < states->Length(); i++)
+    {
+        if(states->At(i)->GetName() == s->GetName())
+            return i;
+    }
+
+    return OUT_OF_INDEX;
 }
 
-std::string DFA_Machine::PrintProcessChain(){
+int DFA_Machine::IndexOfSymbol(AlphabetSymbol* s)
+{
+    for(int i = 0; i < states->Length(); i++)
+    {
+        if(alphabet->At(i)->GetValue() == s->GetValue())
+            return i;
+    }
+
+    return OUT_OF_INDEX;
+}
+
+std::string DFA_Machine::GetProcessChain()
+{
     std::string msg = "";
     for (int i = 0; i < processChain->Length(); i++){
         msg += processChain->At(i);
@@ -128,3 +132,37 @@ std::string DFA_Machine::PrintProcessChain(){
     return msg;
 }
 
+bool DFA_Machine::IsOnFinalState()
+{
+    return currentState != trapState && currentState->IsAFinalState();
+}
+
+void DFA_Machine::ProcessSymbol(AlphabetSymbol sim)
+{
+    if (currentState == trapState)
+    {
+        return;
+    }
+
+    State* oldState = currentState;
+    std::string msg = "";
+    if(currentState->CanProcessSymbol(sim)){
+        currentState = currentState->ProcessSymbol(sim);
+
+        msg = oldState ->GetName() + "->" + sim.GetValue() + "->" + currentState->GetName() + "\n";
+        processChain->Push(msg);
+    }else{
+        msg = oldState ->GetName() + "->" + sim.GetValue() + "->" + CRASH_STATUS_NAME +"\n";
+        processChain->Push(msg);
+        currentState = trapState;
+    }
+}
+
+void DFA_Machine::ProcessEpsilon()
+{
+    if (currentState == trapState)
+        return;
+
+    /* TODO: Add ProcessEpsilon Code*/
+    //currentState = currentState->ProcessEpsilon();
+}

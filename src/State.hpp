@@ -15,13 +15,13 @@ class State
         std::string GetTransitionsStr();
 
         bool IsAFinalState();
-        void SetAsFinalState(bool value);
 
         bool operator==(State other);
         bool operator==(State* other);
 
-        bool CanProcessSymbol(Symbol s);
-        State* Process(Symbol s);
+        bool CanProcessSymbol(AlphabetSymbol s);
+        State* ProcessSymbol(AlphabetSymbol s);
+        State* ProcessEpsilon();
     private:
         std::string _name;
         bool _isAFinalState;

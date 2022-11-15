@@ -5,7 +5,7 @@
 #include "DFA_Machine.hpp"
 #include "Exceptions/Exception.hpp"
 
-#include "Symbol.hpp"
+#include "AlphabetSymbol.hpp"
 #include "Transition.hpp"
 #include "State.hpp"
 
@@ -18,9 +18,9 @@ void TestTransitions()
 {
     State* q0 = new State("q0");
     State* q1 = new State("q1");
-    Symbol* a = new Symbol("a");
+    AlphabetSymbol* a = new AlphabetSymbol("a");
     Transition* t =  new Transition(q1, a);
-    Transition* t2 = new Transition(q1, new Symbol());
+    Transition* t2 = new Transition(q1, new AlphabetSymbol());
 
     q0->AddTransition(t);
     q0->AddTransition(t2);
@@ -35,24 +35,22 @@ void TestDFAReader()
         DFA_Machine* machine = new DFA_Machine(data);
 
         cout << machine->ToString();
-        
-        //machine->Process(machine->);
 
         for(int i = 0; i < 10; i++){
             if((i%2) == 0){
-                machine->Process(Symbol("0"));
+                machine->ProcessSymbol(AlphabetSymbol("0"));
             }else{
-                machine->Process(Symbol("1"));
+                machine->ProcessSymbol(AlphabetSymbol("1"));
             }
         }
-        cout << machine->PrintProcessChain() << endl;
+
+        cout << "-----Processment-----" << endl;
+        cout << machine->GetProcessChain() << endl;
         if (machine->IsOnFinalState()){
            cout << "Cadeia eh aceita" << endl;
         }else{
             cout << "Cadeia nao eh aceita" << endl;
         }
-        
-        
     }
     catch(FileNotFoundException e)
     {
@@ -83,5 +81,17 @@ int main()
     TestDFAReader();
     //TestStrSplit();
 
-
+    // try
+    // {
+    //     Transition_ReadedData d;
+    //     d.destinState = "destino";
+    //     d.initialState = "inicio";
+    //     d.transitionSymbol = "simbolo";
+    //     throw InvalidTransitionFormatException(d);
+    // }
+    // catch (InvalidTransitionFormatException &e)
+    // {
+    //     std::cout << e.what() << std::endl;
+    // }
+    return{ 0 };
 }

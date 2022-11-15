@@ -7,13 +7,13 @@ Transition::Transition()
 }
 
 
-Transition::Transition(State* destin, Symbol* transitionSymbol)
+Transition::Transition(State* destin, AlphabetSymbol* transitionSymbol)
 {
     this->_destin = destin;
     this->_transitionSymbol = transitionSymbol;
 }
 
-Symbol* Transition::GetTransitionSymbol()
+AlphabetSymbol* Transition::GetTransitionSymbol()
 {
     return this->_transitionSymbol;
 }
