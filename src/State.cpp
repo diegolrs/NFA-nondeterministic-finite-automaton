@@ -65,13 +65,18 @@ bool State::CanProcessSymbol(AlphabetSymbol s){
     return false;
 }
 
-State* State::ProcessSymbol(AlphabetSymbol s){
+MyList<State*> State::ProcessSymbol(AlphabetSymbol s){
+    MyList<State*> *states;
+    int count = 0;
     for(int i = 0; i < _transitions->Length(); i++){
         if (_transitions->At(i)->GetTransitionSymbol()->IsEquals(s)){
-            return _transitions->At(i)->GetDestinationState();
+            count++;
+            if (count > 1){
+                states->Push(_transitions->At(i)->GetDestinationState());
+            } 
         }
     }
-    return nullptr;
+    return *states;
 }
 
 State* State::ProcessEpsilon()

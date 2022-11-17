@@ -20,10 +20,11 @@ class State
         bool operator==(State* other);
 
         bool CanProcessSymbol(AlphabetSymbol s);
-        State* ProcessSymbol(AlphabetSymbol s);
+        MyList<State*> ProcessSymbol(AlphabetSymbol s);
         State* ProcessEpsilon();
     private:
         std::string _name;
         bool _isAFinalState;
         MyList<Transition*>* _transitions;
+        
 };

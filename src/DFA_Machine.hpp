@@ -7,12 +7,14 @@
 #include "AlphabetSymbol.hpp"
 #include "State.hpp"
 #include "Transition.hpp"
+#include "StateAfn.hpp"
 
 //Deterministic Finite Automaton Machine
 class DFA_Machine
 {
     public:
         DFA_Machine(DFA_ReadedData data);
+        DFA_Machine(DFA_Machine *other);
         std::string ToString();
 
         std::string GetProcessChain();
@@ -27,7 +29,7 @@ class DFA_Machine
         MyList<State*>* states;
 
         State* initialState;
-        State* currentState; 
+        MyList<StateAfn*>* currentState; 
         State* trapState;
 
         MyList<Transition*>* transitions;
@@ -36,4 +38,5 @@ class DFA_Machine
         bool ContainsState(State* s);
         int IndexOfState(State* s);
         int IndexOfSymbol(AlphabetSymbol* s);
+
 };
