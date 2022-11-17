@@ -14,7 +14,6 @@ class DFA_Machine
 {
     public:
         DFA_Machine(DFA_ReadedData data);
-        DFA_Machine(DFA_Machine *other);
         std::string ToString();
 
         std::string GetProcessChain();
@@ -30,13 +29,11 @@ class DFA_Machine
 
         State* initialState;
         MyList<StateAfn*>* currentState; 
-        State* trapState;
+        StateAfn* trapState;
 
         MyList<Transition*>* transitions;
-        MyList<std::string>* processChain;
-
+        
         bool ContainsState(State* s);
         int IndexOfState(State* s);
         int IndexOfSymbol(AlphabetSymbol* s);
-
 };

@@ -40,7 +40,7 @@ std::string State::GetTransitionsStr()
 
 bool State::IsAFinalState()
 {
-    return _isAFinalState;
+    return this->_isAFinalState;
 }
 
 bool State::operator==(State other)
@@ -48,12 +48,14 @@ bool State::operator==(State other)
     return this->GetName() == other.GetName();
 }
 
-bool State::operator==(State* other)
-{
-    std::string s1 = GetName();
-    std::string s2 = other->GetName();
+// bool State::operator==(State* other)
+// {
+//     return GetName() == other->GetName();
+// }
 
-    return s1 == s2;
+bool State::IsEquals(State* other)
+{
+    return GetName() == other->GetName();
 }
 
 bool State::CanProcessSymbol(AlphabetSymbol s){
@@ -65,18 +67,19 @@ bool State::CanProcessSymbol(AlphabetSymbol s){
     return false;
 }
 
-MyList<State*> State::ProcessSymbol(AlphabetSymbol s){
-    MyList<State*> *states;
-    int count = 0;
-    for(int i = 0; i < _transitions->Length(); i++){
-        if (_transitions->At(i)->GetTransitionSymbol()->IsEquals(s)){
-            count++;
-            if (count > 1){
-                states->Push(_transitions->At(i)->GetDestinationState());
-            } 
+MyList<State*> State::ProcessSymbol(AlphabetSymbol s)
+{
+    MyList<State*> states = MyList<State*>();
+
+    for(int i = 0; i < _transitions->Length(); i++)
+    {
+        if (_transitions->At(i)->GetTransitionSymbol()->IsEquals(s))
+        {
+            states.Push(_transitions->At(i)->GetDestinationState());
         }
     }
-    return *states;
+
+    return states;
 }
 
 State* State::ProcessEpsilon()

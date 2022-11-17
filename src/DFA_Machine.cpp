@@ -6,8 +6,7 @@ DFA_Machine::DFA_Machine(DFA_ReadedData data)
     alphabet = new MyList<AlphabetSymbol*>();
     states = new MyList<State*>();      
     transitions = new MyList<Transition*>();
-    processChain = new MyList<std::string>();
-    trapState = new State(TRAP_STATE_NAME);
+    trapState = new StateAfn(new State(TRAP_STATE_NAME));
 
     // Symbols
     for(int i = 0; i < data.alphabet->Length(); i++)
@@ -56,18 +55,8 @@ DFA_Machine::DFA_Machine(DFA_ReadedData data)
     }
 
     currentState = new MyList<StateAfn*>();
+    currentState->Push(new StateAfn(initialState));
 }
-
-
-DFA_Machine::DFA_Machine(DFA_Machine *other)
-{
-    alphabet = other->alphabet;
-    states = other->states;      
-    transitions = other->transitions;
-    processChain = other->processChain;
-    trapState = other->trapState;
-};
-
 
 std::string DFA_Machine::ToString()
 {
@@ -138,11 +127,10 @@ std::string DFA_Machine::GetProcessChain()
 {
     std::string msg = "";
     for (int i = 0; i < currentState->Length(); i++){
-        MyList<std::string>* _chain = currentState->At(i)->getLastStates();
-        for (int j = 0; j < _chain->Length(); j++)
+        MyList<std::string> _chain = currentState->At(i)->getLastStates();
+        for (int j = 0; j < _chain.Length(); j++)
         {
-            msg += _chain->At(j);
-            
+            msg += _chain.At(j);       
         }
         msg += "\n";
     }
@@ -153,8 +141,11 @@ bool DFA_Machine::IsOnFinalState()
 {
     for (int i = 0; i < currentState->Length(); i++)
     {
-        if ((currentState->At(i)->getCState() != trapState) && (currentState->At(i)->getCState()->IsAFinalState()));
+        State* _s = currentState->At(i)->getCState();
+        if (_s->IsAFinalState())
         {
+            std::string name = currentState->At(i)->getCState()->GetName();
+            bool value = currentState->At(i)->getCState();
             return true;
         }
     }
@@ -167,33 +158,35 @@ void DFA_Machine::ProcessSymbol(AlphabetSymbol sim)
 
     for (int i = 0; i < currentState->Length(); i++)
     {
-        if (currentState->At(i)->getCState() == trapState)
+        if (currentState->At(i)->IsEquals(trapState))
         {
+            afnStates->Push(trapState);
             continue;
         }
 
-        State* oldState = currentState->At(i)->getCState();
         std::string msg = "";
-        if(currentState->At(i)->getCState()->CanProcessSymbol(sim)){
-            //currentState = currentState->At(i)->getCState()->ProcessSymbol(sim).At(0);
-            //afnStates->Push(currentState->At(i)->getCState()->ProcessSymbol(sim).At(i));
-            MyList<State*> _states = currentState->At(i)->getCState()->ProcessSymbol(sim);
+        State* oldState = currentState->At(i)->getCState();
+        MyList<std::string> processChain =  currentState->At(i)->getLastStates();
+
+        if(oldState->CanProcessSymbol(sim))
+        {
+            MyList<State*> _states = oldState->ProcessSymbol(sim);
 
             for (int j = 0; j < _states.Length(); j++)
             {
-                afnStates->Push(new StateAfn(_states.At(j)));
-                afnStates->At(afnStates->Length()-1)->addProcessAfn(oldState ->GetName() + "->" + sim.GetValue() + "->" + currentState->At(i)->getCState()->GetName() + "\n");
+                afnStates->Push(new StateAfn(_states.At(j), processChain));
+                msg = oldState->GetName() + "->" + sim.GetValue() + "->" + _states.At(j)->GetName() + "\n";
+                afnStates->At(afnStates->Length()-1)->addProcessAfn(msg);
             }
-            processChain->Push(msg);
-        }else{
-            afnStates->Push(new StateAfn(trapState));
+        }else
+        {
+            afnStates->Push(new StateAfn(trapState->getCState(), processChain));
             msg = oldState ->GetName() + "->" + sim.GetValue() + "->" + CRASH_STATUS_NAME +"\n";
             afnStates->At(afnStates->Length()-1)->addProcessAfn(msg);
-            processChain->Push(msg);
-            //currentState = trapState;
-            
         }
     }
+
+    currentState->Clear();
     currentState = afnStates;
 }
 

@@ -17,7 +17,8 @@ class State
         bool IsAFinalState();
 
         bool operator==(State other);
-        bool operator==(State* other);
+        // bool operator==(State* other);
+        bool IsEquals(State* other);
 
         bool CanProcessSymbol(AlphabetSymbol s);
         MyList<State*> ProcessSymbol(AlphabetSymbol s);

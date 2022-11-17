@@ -34,17 +34,36 @@ void TestDFAReader()
         DFA_ReadedData data =  DFA_FileReader::ReadFile(FILE_ADDRESS);
         DFA_Machine* machine = new DFA_Machine(data);
 
-        cout << machine->ToString();
+        //cout << machine->ToString();
 
-        for(int i = 0; i < 10; i++){
-            if((i%2) == 0){
-                machine->ProcessSymbol(AlphabetSymbol("0"));
-            }else{
-                machine->ProcessSymbol(AlphabetSymbol("1"));
-            }
-        }
+        // for(int i = 0; i < 10; i++)
+        // {
+        //     if((i%2) == 0){
+        //         machine->ProcessSymbol(AlphabetSymbol("0"));
+        //     }else{
+        //         machine->ProcessSymbol(AlphabetSymbol("1"));
+        //     }
+        // }
 
-        cout << "-----Processment-----" << endl;
+        // machine->ProcessSymbol(AlphabetSymbol("0"));
+        // machine->ProcessSymbol(AlphabetSymbol("0"));
+        // machine->ProcessSymbol(AlphabetSymbol("1"));
+        // machine->ProcessSymbol(AlphabetSymbol("0"));
+        // machine->ProcessSymbol(AlphabetSymbol("1"));
+
+
+        //cout << "-----Processment-----" << endl;
+        // machine->ProcessSymbol(AlphabetSymbol("0"));
+        // machine->ProcessSymbol(AlphabetSymbol("0"));
+        // machine->ProcessSymbol(AlphabetSymbol("0"));
+        // machine->ProcessSymbol(AlphabetSymbol("0"));
+
+        machine->ProcessSymbol(AlphabetSymbol("1"));
+        machine->ProcessSymbol(AlphabetSymbol("1"));
+        machine->ProcessSymbol(AlphabetSymbol("0"));
+        machine->ProcessSymbol(AlphabetSymbol("1"));
+        machine->ProcessSymbol(AlphabetSymbol("1"));
+
         cout << machine->GetProcessChain() << endl;
         if (machine->IsOnFinalState()){
            cout << "Cadeia eh aceita" << endl;
