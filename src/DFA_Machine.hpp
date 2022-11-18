@@ -8,6 +8,7 @@
 #include "State.hpp"
 #include "Transition.hpp"
 #include "StateAfn.hpp"
+#include "NFA_Chain.hpp"
 
 //Deterministic Finite Automaton Machine
 class DFA_Machine

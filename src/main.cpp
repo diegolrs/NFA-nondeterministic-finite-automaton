@@ -63,7 +63,7 @@ void TestDFAReader()
         machine->ProcessSymbol(AlphabetSymbol("0"));
         machine->ProcessSymbol(AlphabetSymbol("1"));
         machine->ProcessSymbol(AlphabetSymbol("0"));
-        
+
         //machine->ProcessSymbol(AlphabetSymbol("0"));
         //machine->ProcessSymbol(AlphabetSymbol("1"));
         //machine->ProcessSymbol(AlphabetSymbol("1"));
@@ -97,11 +97,37 @@ void TestStrSplit()
         cout << l->At(i) << endl;
 }
 
+MyList<NFA_Chain> RetornaStruct()
+{
+    MyList<NFA_Chain> c = MyList<NFA_Chain>();
+    c.Push(NFA_Chain(nullptr, nullptr));
+    return c;
+}
+
+NFA_Chain RetornaChain()
+{
+    return NFA_Chain(nullptr, nullptr);
+}
+
+
 int main()
 {
     //TestTransitions();
     TestDFAReader();
     //TestStrSplit();
+
+    // NFA_Chain c = NFA_Chain(nullptr, nullptr);
+    // MyList<NFA_Chain> chain = RetornaStruct();//MyList<NFA_Chain>();
+    // chain.Push(c);
+
+    // for(int i = 0; i < 5000; i++)
+    // {
+    //     cout<<chain.Length();
+    //     NFA_Chain c2 = NFA_Chain(nullptr, nullptr);
+    //     chain.Push(c2);
+    // }
+
+    // cout << "sucesso";
 
     // try
     // {
