@@ -126,11 +126,12 @@ int DFA_Machine::IndexOfSymbol(AlphabetSymbol* s)
 std::string DFA_Machine::GetProcessChain()
 {
     std::string msg = "";
-    for (int i = 0; i < currentState->Length(); i++){
-        MyList<std::string> _chain = currentState->At(i)->getLastStates();
-        for (int j = 0; j < _chain.Length(); j++)
+    for (int i = 0; i < currentState->Length(); i++)
+    {
+        std::vector<std::string> _chain = currentState->At(i)->getLastStates();
+        for (int j = 0; j < _chain.size(); j++)
         {
-            msg += _chain.At(j);       
+            msg += _chain.at(j);       
         }
         msg += "\n";
     }
@@ -160,13 +161,15 @@ void DFA_Machine::ProcessSymbol(AlphabetSymbol sim)
     {
         if (currentState->At(i)->IsEquals(trapState))
         {
-            afnStates->Push(trapState);
+            //afnStates->Push(trapState);
+            afnStates->Push(new StateAfn(trapState->getCState(), currentState->At(i)->getLastStates()));
             continue;
         }
 
         std::string msg = "";
         State* oldState = currentState->At(i)->getCState();
-        MyList<std::string> processChain =  currentState->At(i)->getLastStates();
+        //MyList<std::string> processChain =  currentState->At(i)->getLastStates();
+        std::vector<std::string> processChain = currentState->At(i)->getLastStates();
 
         if(oldState->CanProcessSymbol(sim))
         {
@@ -176,7 +179,9 @@ void DFA_Machine::ProcessSymbol(AlphabetSymbol sim)
             {
                 afnStates->Push(new StateAfn(_states.At(j), processChain));
                 msg = oldState->GetName() + "->" + sim.GetValue() + "->" + _states.At(j)->GetName() + "\n";
-                afnStates->At(afnStates->Length()-1)->addProcessAfn(msg);
+                int index = afnStates->Length()-1;
+                StateAfn* _mafn = afnStates->At(index);
+                _mafn->addProcessAfn(msg);
             }
         }else
         {

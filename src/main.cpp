@@ -62,7 +62,11 @@ void TestDFAReader()
         machine->ProcessSymbol(AlphabetSymbol("1"));
         machine->ProcessSymbol(AlphabetSymbol("0"));
         machine->ProcessSymbol(AlphabetSymbol("1"));
-        machine->ProcessSymbol(AlphabetSymbol("1"));
+        machine->ProcessSymbol(AlphabetSymbol("0"));
+        
+        //machine->ProcessSymbol(AlphabetSymbol("0"));
+        //machine->ProcessSymbol(AlphabetSymbol("1"));
+        //machine->ProcessSymbol(AlphabetSymbol("1"));
 
         cout << machine->GetProcessChain() << endl;
         if (machine->IsOnFinalState()){
@@ -95,7 +99,6 @@ void TestStrSplit()
 
 int main()
 {
-
     //TestTransitions();
     TestDFAReader();
     //TestStrSplit();
