@@ -29,7 +29,8 @@ class DFA_Machine
         MyList<State*>* states;
 
         State* initialState;
-        MyList<StateAfn*>* currentState; 
+        //MyList<StateAfn*>* currentState; 
+        std::vector<StateAfn*>* currentState; 
         StateAfn* trapState;
 
         MyList<Transition*>* transitions;

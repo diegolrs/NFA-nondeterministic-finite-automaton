@@ -4,6 +4,8 @@
 #include "Utils/MyList.hpp"
 #include "State.fwd.hpp"
 #include "Transition.hpp"
+#include <vector>
+#include <iostream>
 
 class State
 {
@@ -22,6 +24,7 @@ class State
 
         bool CanProcessSymbol(AlphabetSymbol s);
         MyList<State*> ProcessSymbol(AlphabetSymbol s);
+        std::vector<State*> ProcessSymbol2(AlphabetSymbol s);
         State* ProcessEpsilon();
     private:
         std::string _name;

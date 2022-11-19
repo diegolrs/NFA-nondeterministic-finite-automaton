@@ -3,27 +3,8 @@
 StateAfn::StateAfn(State* current)
 {
     curState = current;
-    //lastStates = std::vector<std::string>(); // MyList<std::string>();
     processChain = MyList<NFA_Chain>();
 }
-
-// StateAfn::StateAfn(State* current, MyList<std::string> chain)
-// {
-//     curState = current;
-//     lastStates = std::vector<std::string>();//MyList<std::string>();
-    
-//     for(int i = 0; i < chain.Length(); i++)
-//         lastStates.push_back(chain.At(i));
-// }
-
-// StateAfn::StateAfn(State* current, std::vector<std::string> chain)
-// {
-//     curState = current;
-//     lastStates = std::vector<std::string>();//MyList<std::string>();
-    
-//     for(int i = 0; i < chain.size(); i++)
-//         lastStates.push_back(chain.at(i));
-// }
 
 StateAfn::StateAfn(State* current, MyList<NFA_Chain> chain)
 {
@@ -41,20 +22,14 @@ State* StateAfn::getCurState(){
     return curState;
 }
 
-//MyList<std::string> StateAfn::getLastStates(){
-// std::vector<std::string> StateAfn::getLastStates(){
-
-//     return lastStates;
-// }
-
 MyList<NFA_Chain> StateAfn::GetProcessChain()
 {
     return processChain;
 }
 
-void StateAfn::AddProcessChain(NFA_Chain chain)
+void StateAfn::AddProcessChain(NFA_Chain value)
 {
-    processChain.Push(chain);
+    processChain.Push(value);
 }
 
 bool StateAfn::IsEquals(StateAfn state)

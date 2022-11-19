@@ -82,6 +82,21 @@ MyList<State*> State::ProcessSymbol(AlphabetSymbol s)
     return states;
 }
 
+std::vector<State*> State::ProcessSymbol2(AlphabetSymbol s)
+{
+    std::vector<State*> states = std::vector<State*>();
+
+    for(int i = 0; i < _transitions->Length(); i++)
+    {
+        if (_transitions->At(i)->GetTransitionSymbol()->IsEquals(s))
+        {
+            states.push_back(_transitions->At(i)->GetDestinationState());
+        }
+    }
+
+    return states;
+}
+
 State* State::ProcessEpsilon()
 {
     /* TODO: Add ProcessEpsilon Code*/

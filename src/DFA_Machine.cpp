@@ -54,8 +54,9 @@ DFA_Machine::DFA_Machine(DFA_ReadedData data)
         _init->AddTransition(_transition);
     }
 
-    currentState = new MyList<StateAfn*>();
-    currentState->Push(new StateAfn(initialState));
+    currentState = new std::vector<StateAfn*>();// new MyList<StateAfn*>();
+    //currentState->Push(new StateAfn(initialState));
+    currentState->push_back(new StateAfn(initialState));
 }
 
 std::string DFA_Machine::ToString()
@@ -126,9 +127,9 @@ int DFA_Machine::IndexOfSymbol(AlphabetSymbol* s)
 std::string DFA_Machine::GetProcessChain()
 {
     std::string msg = "";
-    for (int i = 0; i < currentState->Length(); i++)
+    for (int i = 0; i < currentState->size(); i++)
     {
-        MyList<NFA_Chain> _chain = currentState->At(i)->GetProcessChain();
+        MyList<NFA_Chain> _chain = currentState->at(i)->GetProcessChain();
         for (int j = 0; j < _chain.Length(); j++)
         {
             msg += _chain.At(j).GetCurrent()->GetName() + "->";    
@@ -142,13 +143,13 @@ std::string DFA_Machine::GetProcessChain()
 
 bool DFA_Machine::IsOnFinalState()
 {
-    for (int i = 0; i < currentState->Length(); i++)
+    for (int i = 0; i < currentState->size(); i++)
     {
-        State* _s = currentState->At(i)->getCurState();
+        State* _s = currentState->at(i)->getCurState();
         if (_s->IsAFinalState())
         {
-            std::string name = currentState->At(i)->getCurState()->GetName();
-            bool value = currentState->At(i)->getCurState();
+            std::string name = currentState->at(i)->getCurState()->GetName();
+            bool value = currentState->at(i)->getCurState();
             return true;
         }
     }
@@ -157,46 +158,45 @@ bool DFA_Machine::IsOnFinalState()
 
 void DFA_Machine::ProcessSymbol(AlphabetSymbol sim)
 {
-    MyList<StateAfn*>* afnStates = new MyList<StateAfn*>();
+    //MyList<StateAfn*>* afnStates = new MyList<StateAfn*>();
+    std::vector<StateAfn*>* afnStates = new std::vector<StateAfn*>();
     AlphabetSymbol* symbolRef = new AlphabetSymbol(sim.GetValue());
 
-    for (int i = 0; i < currentState->Length(); i++)
+    for (int i = 0; i < currentState->size(); i++)
     {
-        if (currentState->At(i)->IsEquals(trapState))
+        StateAfn* nfaState = currentState->at(i);
+        State* oldState = currentState->at(i)->getCurState();
+        MyList<NFA_Chain> processChain = nfaState->GetProcessChain();
+
+        if (currentState->at(i)->IsEquals(trapState))
         {
             //afnStates->Push(trapState);
-            afnStates->Push(new StateAfn(trapState->getCurState(), currentState->At(i)->GetProcessChain()));
+            afnStates->push_back(new StateAfn(trapState->getCurState(), processChain));
             continue;
         }
 
-        State* oldState = currentState->At(i)->getCurState();
-        //MyList<std::string> processChain =  currentState->At(i)->getLastStates();
-        MyList<NFA_Chain> processChain = currentState->At(i)->GetProcessChain();
-
         if(oldState->CanProcessSymbol(sim))
         {
-            MyList<State*> _states = oldState->ProcessSymbol(sim);
+            //MyList<State*> _states = oldState->ProcessSymbol(sim);
+            std::vector<State*> _states = oldState->ProcessSymbol2(sim);
 
-            for (int j = 0; j < _states.Length(); j++)
+            for (int j = 0; j < _states.size(); j++)
             {
-                afnStates->Push(new StateAfn(_states.At(j), processChain));
-                //msg = oldState->GetName() + "->" + sim.GetValue() + "->" + _states.At(j)->GetName() + "\n";
-                int index = afnStates->Length()-1;
-                StateAfn* _mafn = afnStates->At(index);
-                _mafn->AddProcessChain(NFA_Chain(oldState, new Transition(_states.At(j), symbolRef)));
+                afnStates->push_back(new StateAfn(_states.at(j), processChain));
+                int index = afnStates->size()-1;
+                afnStates->at(index)->AddProcessChain(NFA_Chain(oldState, new Transition(_states.at(j), symbolRef)));
             }
-        }else
+        }
+        else
         {
-            afnStates->Push(new StateAfn(trapState->getCurState(), processChain));
-            //msg = oldState ->GetName() + "->" + sim.GetValue() + "->" + CRASH_STATUS_NAME +"\n";
-            //_mafn->AddProcessChain(NFA_Chain(oldState, new Transition(_states.At(j), symbolRef)));
+            afnStates->push_back(new StateAfn(trapState->getCurState(), processChain));
             Transition* _t = new Transition(trapState->getCurState(), symbolRef);
             NFA_Chain _c = NFA_Chain(oldState, _t);
-            afnStates->At(afnStates->Length()-1)->AddProcessChain(_c);
+            afnStates->at(afnStates->size()-1)->AddProcessChain(_c);
         }
     }
 
-    currentState->Clear();
+    //currentState->clear();
     currentState = afnStates;
 }
 
