@@ -126,23 +126,6 @@ int NFA_Machine::IndexOfSymbol(AlphabetSymbol* s)
     return OUT_OF_INDEX;
 }
 
-std::string NFA_Machine::GetProcessChain()
-{
-    std::string msg = "";
-    // for (int i = 0; i < currentState->size(); i++)
-    // {
-    //     MyList<NFA_Chain> _chain = currentState->at(i)->GetProcessChain();
-    //     for (int j = 0; j < _chain.Length(); j++)
-    //     {
-    //         msg += _chain.At(j).GetCurrent()->GetName() + "->";    
-    //         msg += _chain.At(j).GetTransition()->GetTransitionSymbol()->GetValue() + "->"; 
-    //         msg += _chain.At(j).GetTransition()->GetDestinationState()->GetName() + '\n';       
-    //     }
-    //     msg += "\n";
-    // }
-    return msg;
-}
-
 bool NFA_Machine::IsOnFinalState()
 {
     for (int i = 0; i < currentState->Length(); i++)
@@ -153,6 +136,19 @@ bool NFA_Machine::IsOnFinalState()
         }
     }
     return false;
+}
+
+std::string NFA_Machine::GetEndOfProcessingMessage(MyList<State*> l)
+{
+    for (int i = 0; i < l.Length(); i++)
+    {
+        if (l.At(i)->IsAFinalState())
+        {
+            return CHAIN_IS_ACCEPTED_MSG;
+        }
+    }
+
+    return CHAIN_IS_NOT_ACCEPTED_MSG;
 }
 
 bool NFA_Machine::IsACurrentState(State* s)
@@ -167,7 +163,7 @@ bool NFA_Machine::IsACurrentState(State* s)
     return false;
 }
 
-void NFA_Machine::ProcessSymbol(AlphabetSymbol sim, int index)
+void NFA_Machine::ProcessSymbol(AlphabetSymbol sim, int iterationIndex, int maxIndex)
 {
     MyList<State*>* afnStates = new MyList<State*>();
     AlphabetSymbol* symbolRef = new AlphabetSymbol(sim.GetValue());
@@ -178,7 +174,7 @@ void NFA_Machine::ProcessSymbol(AlphabetSymbol sim, int index)
         oldState = currentState->At(i);
 
         std::cout << " -------------------------- " << std::endl;
-        std::cout << "N interacao: " << index << std::endl;
+        std::cout << "N interacao: " << iterationIndex << std::endl;
         std::cout << "Atual: " << currentState->At(i)->GetName() << std::endl;
         std::cout << "Simbolo: " << sim.GetValue() << std::endl;
 
@@ -189,7 +185,6 @@ void NFA_Machine::ProcessSymbol(AlphabetSymbol sim, int index)
 
         if(oldState->CanProcessSymbol(sim))
         {
-            //MyList<State*> _states = oldState->ProcessSymbol(sim);
             MyList<State*> _states = oldState->ProcessSymbol(sim);
 
             for (int j = 0; j < _states.Length(); j++)
@@ -199,10 +194,16 @@ void NFA_Machine::ProcessSymbol(AlphabetSymbol sim, int index)
                 afnStates->Push(_states.At(j));
                 int index = afnStates->Length()-1;
             }
+
+            if(iterationIndex >= maxIndex)
+                std::cout << GetEndOfProcessingMessage(_states);
         }
         else
         {
-            std::cout << "Destino: " << crashState->GetName() << std::endl;     
+            std::cout << "Destino: " << crashState->GetName() << std::endl;  
+
+            if(iterationIndex >= maxIndex)
+                std::cout << CHAIN_IS_NOT_ACCEPTED_MSG; 
         }
     }
 
@@ -210,7 +211,7 @@ void NFA_Machine::ProcessSymbol(AlphabetSymbol sim, int index)
     currentState = afnStates;
 }
 
-void NFA_Machine::ProcessEpsilon(int index)
+void NFA_Machine::ProcessEpsilon(int iterationIndex, int maxIndex)
 {
     AlphabetSymbol* epsilon = new AlphabetSymbol();
 
@@ -228,13 +229,18 @@ void NFA_Machine::ProcessEpsilon(int index)
         for (int j = 0; j < _states.Length(); j++)
         {
             std::cout << " -------------------------- " << std::endl;
-            std::cout << "N interacao: " << index << std::endl;
+            std::cout << "N interacao: " << iterationIndex << std::endl;
             std::cout << "Atual: " << curState->GetName() << std::endl;
             std::cout << "Simbolo: " << epsilon->GetValue() << std::endl;
             std::cout << "Destino: " << _states.At(j)->GetName() << std::endl;
 
             if(!IsACurrentState(_states.At(j)))
+            {
                 currentState->Push(_states.At(j));
+
+                if(iterationIndex >= maxIndex)
+                    std::cout << GetEndOfProcessingMessage(_states);
+            }            
         }
     }
 }

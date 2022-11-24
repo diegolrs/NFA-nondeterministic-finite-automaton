@@ -15,13 +15,16 @@ class NFA_Machine
         NFA_Machine(NFA_ReadedData data);
         std::string ToString();
 
-        std::string GetProcessChain();
         bool IsOnFinalState();
-        void ProcessSymbol(AlphabetSymbol sim, int index);
-        void ProcessEpsilon(int index);
+        std::string GetEndOfProcessingMessage(MyList<State*> l);
+
+        void ProcessSymbol(AlphabetSymbol sim, int iterationIndex, int maxIndex);
+        void ProcessEpsilon(int iterationIndex, int maxIndex);
     private:
         const std::string TRAP_STATE_NAME = "Trap State";
         const std::string CRASH_STATUS_NAME = "CRASH";
+        const std::string CHAIN_IS_ACCEPTED_MSG = "A cadeia processada eh aceita. \n";
+        const std::string CHAIN_IS_NOT_ACCEPTED_MSG = "A cadeia processada nao eh aceita. \n";
 
         MyList<AlphabetSymbol*>* alphabet;
         MyList<State*>* states;
