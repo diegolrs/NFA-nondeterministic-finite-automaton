@@ -1,8 +1,8 @@
 #include <iostream>
 #include <string>
 #include "Utils/MyList.hpp"
-#include "DFA_FileReader.hpp"
-#include "DFA_Machine.hpp"
+#include "NFA_FileReader.hpp"
+#include "NFA_Machine.hpp"
 #include "Exceptions/Exception.hpp"
 
 #include "AlphabetSymbol.hpp"
@@ -10,7 +10,7 @@
 #include "State.hpp"
 
 using namespace std;
-using namespace DFA_FileReader;
+using namespace NFA_FileReader;
 
 const std::string FILE_ADDRESS = "../afn7.txt";
 
@@ -31,8 +31,8 @@ void TestDFAReader()
 {
     try
     {
-        DFA_ReadedData data =  DFA_FileReader::ReadFile(FILE_ADDRESS);
-        DFA_Machine* machine = new DFA_Machine(data);
+        NFA_ReadedData data =  NFA_FileReader::ReadFile(FILE_ADDRESS);
+        NFA_Machine* machine = new NFA_Machine(data);
 
         //cout << machine->ToString();
 

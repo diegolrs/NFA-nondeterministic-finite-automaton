@@ -1,6 +1,6 @@
-#include "DFA_FileReader.hpp"
+#include "NFA_FileReader.hpp"
 
-DFA_ReadedData DFA_FileReader::ReadFile(std::string address)
+NFA_ReadedData NFA_FileReader::ReadFile(std::string address)
 {
     std::string myText;
     std::ifstream myFile(address);
@@ -43,7 +43,7 @@ DFA_ReadedData DFA_FileReader::ReadFile(std::string address)
 
     myFile.close();
 
-    DFA_ReadedData readedData = DFA_ReadedData();
+    NFA_ReadedData readedData = NFA_ReadedData();
     readedData.alphabet = alphabet;
     readedData.endStates = endStates;
     readedData.initialState = initialState;
@@ -52,30 +52,30 @@ DFA_ReadedData DFA_FileReader::ReadFile(std::string address)
     return readedData;
 }
 
-MyList<std::string>* DFA_FileReader::ReadAlphabet(std::string alphabetLine)
+MyList<std::string>* NFA_FileReader::ReadAlphabet(std::string alphabetLine)
 {
     std::string inputline = StringExtensions::RemoveText(alphabetLine, ALPHABET_FILE_TAG);
     return StringExtensions::Split(inputline, DELIMETER);
 }
 
-MyList<std::string>* DFA_FileReader::ReadStates(std::string statesLine)
+MyList<std::string>* NFA_FileReader::ReadStates(std::string statesLine)
 {
     std::string inputline =  StringExtensions::RemoveText(statesLine, STATES_FILE_TAG);
     return StringExtensions::Split(inputline, DELIMETER);
 }
 
-std::string DFA_FileReader::ReadInitialState(std::string initialStateLine)
+std::string NFA_FileReader::ReadInitialState(std::string initialStateLine)
 {
     return StringExtensions::RemoveText(initialStateLine, INIT_STATE_FILE_TAG);
 }
 
-MyList<std::string>* DFA_FileReader::ReadEndStates(std::string endStatesLine)
+MyList<std::string>* NFA_FileReader::ReadEndStates(std::string endStatesLine)
 {
     std::string inputline = StringExtensions::RemoveText(endStatesLine, END_STATES_FILE_TAG);
     return StringExtensions::Split(inputline, DELIMETER);
 }
 
-MyList<Transition_ReadedData>* DFA_FileReader::ReadTransitions(std::ifstream *myFile)
+MyList<Transition_ReadedData>* NFA_FileReader::ReadTransitions(std::ifstream *myFile)
 {
     std::string inputline;
     MyList<Transition_ReadedData>* transitionsData = new MyList<Transition_ReadedData>();

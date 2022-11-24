@@ -1,7 +1,7 @@
 #pragma once
 
 #include <iostream>
-#include "DFA_ReadedData.hpp"
+#include "NFA_ReadedData.hpp"
 #include "Exceptions/NFA_Exceptions.hpp"
 
 #include "AlphabetSymbol.hpp"
@@ -9,10 +9,10 @@
 #include "Transition.hpp"
 
 //Deterministic Finite Automaton Machine
-class DFA_Machine
+class NFA_Machine
 {
     public:
-        DFA_Machine(DFA_ReadedData data);
+        NFA_Machine(NFA_ReadedData data);
         std::string ToString();
 
         std::string GetProcessChain();

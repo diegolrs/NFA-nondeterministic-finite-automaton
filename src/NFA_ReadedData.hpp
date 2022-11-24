@@ -11,7 +11,7 @@ struct Transition_ReadedData
 };
 
 //Deterministic Finite Automaton data readed from file
-struct DFA_ReadedData
+struct NFA_ReadedData
 {  
     MyList<std::string>* alphabet;
     MyList<std::string>* states;

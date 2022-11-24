@@ -1,7 +1,7 @@
-#include "DFA_Machine.hpp"
+#include "NFA_Machine.hpp"
 
 //Deterministic Finite Automaton Machine
-DFA_Machine::DFA_Machine(DFA_ReadedData data)
+NFA_Machine::NFA_Machine(NFA_ReadedData data)
 {
     alphabet = new MyList<AlphabetSymbol*>();
     states = new MyList<State*>();      
@@ -61,7 +61,7 @@ DFA_Machine::DFA_Machine(DFA_ReadedData data)
     currentState->Push(initialState);
 }
 
-std::string DFA_Machine::ToString()
+std::string NFA_Machine::ToString()
 {
     std::string s = "";
 
@@ -93,7 +93,7 @@ std::string DFA_Machine::ToString()
     return s;
 }
 
-bool DFA_Machine::ContainsState(State* s)
+bool NFA_Machine::ContainsState(State* s)
 {
     for(int i = 0; i < states->Length(); i++)
     {
@@ -104,7 +104,7 @@ bool DFA_Machine::ContainsState(State* s)
     return false;
 }
 
-int DFA_Machine::IndexOfState(State* s)
+int NFA_Machine::IndexOfState(State* s)
 {
     for(int i = 0; i < states->Length(); i++)
     {
@@ -115,7 +115,7 @@ int DFA_Machine::IndexOfState(State* s)
     return OUT_OF_INDEX;
 }
 
-int DFA_Machine::IndexOfSymbol(AlphabetSymbol* s)
+int NFA_Machine::IndexOfSymbol(AlphabetSymbol* s)
 {
     for(int i = 0; i < states->Length(); i++)
     {
@@ -126,7 +126,7 @@ int DFA_Machine::IndexOfSymbol(AlphabetSymbol* s)
     return OUT_OF_INDEX;
 }
 
-std::string DFA_Machine::GetProcessChain()
+std::string NFA_Machine::GetProcessChain()
 {
     std::string msg = "";
     // for (int i = 0; i < currentState->size(); i++)
@@ -143,7 +143,7 @@ std::string DFA_Machine::GetProcessChain()
     return msg;
 }
 
-bool DFA_Machine::IsOnFinalState()
+bool NFA_Machine::IsOnFinalState()
 {
     for (int i = 0; i < currentState->Length(); i++)
     {
@@ -155,7 +155,7 @@ bool DFA_Machine::IsOnFinalState()
     return false;
 }
 
-bool DFA_Machine::IsACurrentState(State* s)
+bool NFA_Machine::IsACurrentState(State* s)
 {
     for (int i = 0; i < currentState->Length(); i++)
     {
@@ -167,7 +167,7 @@ bool DFA_Machine::IsACurrentState(State* s)
     return false;
 }
 
-void DFA_Machine::ProcessSymbol(AlphabetSymbol sim, int index)
+void NFA_Machine::ProcessSymbol(AlphabetSymbol sim, int index)
 {
     MyList<State*>* afnStates = new MyList<State*>();
     AlphabetSymbol* symbolRef = new AlphabetSymbol(sim.GetValue());
@@ -210,7 +210,7 @@ void DFA_Machine::ProcessSymbol(AlphabetSymbol sim, int index)
     currentState = afnStates;
 }
 
-void DFA_Machine::ProcessEpsilon(int index)
+void NFA_Machine::ProcessEpsilon(int index)
 {
     AlphabetSymbol* epsilon = new AlphabetSymbol();
 

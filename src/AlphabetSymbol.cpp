@@ -1,9 +1,9 @@
 #include "AlphabetSymbol.hpp"
-#include "DFA_FileReader.hpp"
+#include "NFA_FileReader.hpp"
 
 AlphabetSymbol::AlphabetSymbol()
 {
-    _value = DFA_FileReader::EPSILON_FILE_TAG;
+    _value = NFA_FileReader::EPSILON_FILE_TAG;
 }
 
 AlphabetSymbol::AlphabetSymbol(std::string value)
@@ -18,7 +18,7 @@ std::string AlphabetSymbol::GetValue()
 
 bool AlphabetSymbol::IsEpsilon()
 {
-    return _value == DFA_FileReader::EPSILON_FILE_TAG;
+    return _value == NFA_FileReader::EPSILON_FILE_TAG;
 }
 
 bool AlphabetSymbol::IsEquals(AlphabetSymbol s)
