@@ -44,7 +44,7 @@ MyList<T>::MyList()
 template <typename T>
 MyList<T>::~MyList()
 {
-    this->Clear();
+    //this->Clear();
 }
 
 template <typename T>

@@ -40,7 +40,7 @@ std::string State::GetTransitionsStr()
 
 bool State::IsAFinalState()
 {
-    return _isAFinalState;
+    return this->_isAFinalState;
 }
 
 bool State::operator==(State other)
@@ -48,12 +48,14 @@ bool State::operator==(State other)
     return this->GetName() == other.GetName();
 }
 
-bool State::operator==(State* other)
-{
-    std::string s1 = GetName();
-    std::string s2 = other->GetName();
+// bool State::operator==(State* other)
+// {
+//     return GetName() == other->GetName();
+// }
 
-    return s1 == s2;
+bool State::IsEquals(State* other)
+{
+    return GetName() == other->GetName();
 }
 
 bool State::CanProcessSymbol(AlphabetSymbol s){
@@ -65,13 +67,49 @@ bool State::CanProcessSymbol(AlphabetSymbol s){
     return false;
 }
 
-State* State::ProcessSymbol(AlphabetSymbol s){
+bool State::CanProcessSymbol(AlphabetSymbol* s)
+{
     for(int i = 0; i < _transitions->Length(); i++){
         if (_transitions->At(i)->GetTransitionSymbol()->IsEquals(s)){
-            return _transitions->At(i)->GetDestinationState();
+            return true;
         }
     }
-    return nullptr;
+    return false;
+}
+
+MyList<State*> State::ProcessSymbol(AlphabetSymbol s)
+{
+    MyList<State*> states = MyList<State*>();
+
+    for(int i = 0; i < _transitions->Length(); i++)
+    {
+        if (_transitions->At(i)->GetTransitionSymbol()->IsEquals(s))
+        {
+            states.Push(_transitions->At(i)->GetDestinationState());
+        }
+    }
+
+    return states;
+}
+
+std::vector<State*> State::ProcessSymbol2(AlphabetSymbol* s)
+{
+    return this->ProcessSymbol2(AlphabetSymbol(s->GetValue()));
+}
+
+std::vector<State*> State::ProcessSymbol2(AlphabetSymbol s)
+{
+    std::vector<State*> states = std::vector<State*>();
+
+    for(int i = 0; i < _transitions->Length(); i++)
+    {
+        if (_transitions->At(i)->GetTransitionSymbol()->IsEquals(s))
+        {
+            states.push_back(_transitions->At(i)->GetDestinationState());
+        }
+    }
+
+    return states;
 }
 
 State* State::ProcessEpsilon()

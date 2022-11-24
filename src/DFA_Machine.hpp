@@ -7,6 +7,8 @@
 #include "AlphabetSymbol.hpp"
 #include "State.hpp"
 #include "Transition.hpp"
+#include "StateAfn.hpp"
+#include "NFA_Chain.hpp"
 
 //Deterministic Finite Automaton Machine
 class DFA_Machine
@@ -17,8 +19,8 @@ class DFA_Machine
 
         std::string GetProcessChain();
         bool IsOnFinalState();
-        void ProcessSymbol(AlphabetSymbol sim);
-        void ProcessEpsilon();
+        void ProcessSymbol(AlphabetSymbol sim, int index);
+        void ProcessEpsilon(int index);
     private:
         const std::string TRAP_STATE_NAME = "Trap State";
         const std::string CRASH_STATUS_NAME = "CRASH";
@@ -27,12 +29,12 @@ class DFA_Machine
         MyList<State*>* states;
 
         State* initialState;
-        State* currentState; 
-        State* trapState;
+        //MyList<StateAfn*>* currentState; 
+        std::vector<StateAfn*>* currentState; 
+        StateAfn* trapState;
 
         MyList<Transition*>* transitions;
-        MyList<std::string>* processChain;
-
+        
         bool ContainsState(State* s);
         int IndexOfState(State* s);
         int IndexOfSymbol(AlphabetSymbol* s);

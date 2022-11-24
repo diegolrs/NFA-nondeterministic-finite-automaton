@@ -4,6 +4,8 @@
 #include "Utils/MyList.hpp"
 #include "State.fwd.hpp"
 #include "Transition.hpp"
+#include <vector>
+#include <iostream>
 
 class State
 {
@@ -17,13 +19,18 @@ class State
         bool IsAFinalState();
 
         bool operator==(State other);
-        bool operator==(State* other);
+        // bool operator==(State* other);
+        bool IsEquals(State* other);
 
         bool CanProcessSymbol(AlphabetSymbol s);
-        State* ProcessSymbol(AlphabetSymbol s);
+        bool CanProcessSymbol(AlphabetSymbol* s);
+        MyList<State*> ProcessSymbol(AlphabetSymbol s);
+        std::vector<State*> ProcessSymbol2(AlphabetSymbol s);
+        std::vector<State*> ProcessSymbol2(AlphabetSymbol* s);
         State* ProcessEpsilon();
     private:
         std::string _name;
         bool _isAFinalState;
         MyList<Transition*>* _transitions;
+        
 };

@@ -12,7 +12,7 @@
 using namespace std;
 using namespace DFA_FileReader;
 
-const std::string FILE_ADDRESS = "../afn5.txt";
+const std::string FILE_ADDRESS = "../afn7.txt";
 
 void TestTransitions()
 {
@@ -34,18 +34,47 @@ void TestDFAReader()
         DFA_ReadedData data =  DFA_FileReader::ReadFile(FILE_ADDRESS);
         DFA_Machine* machine = new DFA_Machine(data);
 
-        cout << machine->ToString();
+        //cout << machine->ToString();
 
-        for(int i = 0; i < 10; i++){
-            if((i%2) == 0){
-                machine->ProcessSymbol(AlphabetSymbol("0"));
-            }else{
-                machine->ProcessSymbol(AlphabetSymbol("1"));
-            }
-        }
+        // for(int i = 0; i < 10; i++)
+        // {
+        //     if((i%2) == 0){
+        //         machine->ProcessSymbol(AlphabetSymbol("0"));
+        //     }else{
+        //         machine->ProcessSymbol(AlphabetSymbol("1"));
+        //     }
+        // }
 
-        cout << "-----Processment-----" << endl;
-        cout << machine->GetProcessChain() << endl;
+        // machine->ProcessSymbol(AlphabetSymbol("0"));
+        // machine->ProcessSymbol(AlphabetSymbol("0"));
+        // machine->ProcessSymbol(AlphabetSymbol("1"));
+        // machine->ProcessSymbol(AlphabetSymbol("0"));
+        // machine->ProcessSymbol(AlphabetSymbol("1"));
+
+
+        //cout << "-----Processment-----" << endl;
+        // machine->ProcessSymbol(AlphabetSymbol("0"));
+        // machine->ProcessSymbol(AlphabetSymbol("0"));
+        // machine->ProcessSymbol(AlphabetSymbol("0"));
+        // machine->ProcessSymbol(AlphabetSymbol("0"));
+
+        machine->ProcessEpsilon(-1);
+
+        machine->ProcessSymbol(AlphabetSymbol("1"), 0);
+        machine->ProcessEpsilon(0);
+        machine->ProcessSymbol(AlphabetSymbol("0"), 1);
+        machine->ProcessEpsilon(1);
+
+        // machine->ProcessSymbol(AlphabetSymbol("1"), 1);
+        // machine->ProcessSymbol(AlphabetSymbol("0"), 2);
+        // machine->ProcessSymbol(AlphabetSymbol("1"), 3);
+        // machine->ProcessSymbol(AlphabetSymbol("0"), 4);
+
+        //machine->ProcessSymbol(AlphabetSymbol("0"));
+        //machine->ProcessSymbol(AlphabetSymbol("1"));
+        //machine->ProcessSymbol(AlphabetSymbol("1"));
+
+        //cout << machine->GetProcessChain() << endl;
         if (machine->IsOnFinalState()){
            cout << "Cadeia eh aceita" << endl;
         }else{
@@ -74,12 +103,37 @@ void TestStrSplit()
         cout << l->At(i) << endl;
 }
 
+MyList<NFA_Chain> RetornaStruct()
+{
+    MyList<NFA_Chain> c = MyList<NFA_Chain>();
+    c.Push(NFA_Chain(nullptr, nullptr));
+    return c;
+}
+
+NFA_Chain RetornaChain()
+{
+    return NFA_Chain(nullptr, nullptr);
+}
+
+
 int main()
 {
-
     //TestTransitions();
     TestDFAReader();
     //TestStrSplit();
+
+    // NFA_Chain c = NFA_Chain(nullptr, nullptr);
+    // MyList<NFA_Chain> chain = RetornaStruct();//MyList<NFA_Chain>();
+    // chain.Push(c);
+
+    // for(int i = 0; i < 5000; i++)
+    // {
+    //     cout<<chain.Length();
+    //     NFA_Chain c2 = NFA_Chain(nullptr, nullptr);
+    //     chain.Push(c2);
+    // }
+
+    // cout << "sucesso";
 
     // try
     // {

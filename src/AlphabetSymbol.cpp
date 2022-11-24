@@ -16,7 +16,7 @@ std::string AlphabetSymbol::GetValue()
     return _value;
 }
 
-bool AlphabetSymbol::IsEpsilon(AlphabetSymbol s)
+bool AlphabetSymbol::IsEpsilon()
 {
     return _value == DFA_FileReader::EPSILON_FILE_TAG;
 }
@@ -24,6 +24,11 @@ bool AlphabetSymbol::IsEpsilon(AlphabetSymbol s)
 bool AlphabetSymbol::IsEquals(AlphabetSymbol s)
 {
     return _value == s.GetValue();
+}
+
+bool AlphabetSymbol::IsEquals(AlphabetSymbol* s)
+{
+    return _value == s->GetValue();
 }
 
 bool AlphabetSymbol::operator==(AlphabetSymbol other)
