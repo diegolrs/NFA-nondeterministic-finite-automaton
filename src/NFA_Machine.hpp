@@ -1,40 +1,41 @@
 #pragma once
 
 #include <iostream>
-#include "DFA_ReadedData.hpp"
+#include "NFA_ReadedData.hpp"
 #include "Exceptions/NFA_Exceptions.hpp"
 
 #include "AlphabetSymbol.hpp"
 #include "State.hpp"
 #include "Transition.hpp"
-#include "StateAfn.hpp"
-#include "NFA_Chain.hpp"
 
 //Deterministic Finite Automaton Machine
-class DFA_Machine
+class NFA_Machine
 {
     public:
-        DFA_Machine(DFA_ReadedData data);
+        NFA_Machine(NFA_ReadedData data);
         std::string ToString();
 
-        std::string GetProcessChain();
         bool IsOnFinalState();
-        void ProcessSymbol(AlphabetSymbol sim, int index);
-        void ProcessEpsilon(int index);
+        std::string GetEndOfProcessingMessage(MyList<State*> l);
+
+        void ProcessSymbol(AlphabetSymbol sim, int iterationIndex, int maxIndex);
+        void ProcessEpsilon(int iterationIndex, int maxIndex);
     private:
         const std::string TRAP_STATE_NAME = "Trap State";
         const std::string CRASH_STATUS_NAME = "CRASH";
+        const std::string CHAIN_IS_ACCEPTED_MSG = "A cadeia processada eh aceita. \n";
+        const std::string CHAIN_IS_NOT_ACCEPTED_MSG = "A cadeia processada nao eh aceita. \n";
 
         MyList<AlphabetSymbol*>* alphabet;
         MyList<State*>* states;
 
         State* initialState;
-        //MyList<StateAfn*>* currentState; 
-        std::vector<StateAfn*>* currentState; 
-        StateAfn* trapState;
+        MyList<State*>* currentState; 
+        State* crashState;
 
         MyList<Transition*>* transitions;
         
+        bool IsACurrentState(State* s);
         bool ContainsState(State* s);
         int IndexOfState(State* s);
         int IndexOfSymbol(AlphabetSymbol* s);

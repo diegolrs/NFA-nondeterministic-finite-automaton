@@ -1,6 +1,6 @@
 #pragma once
 #include "Exception.hpp"
-#include "../DFA_ReadedData.hpp"
+#include "../NFA_ReadedData.hpp"
 
 class InvalidTransitionFormatException : Exception
 {

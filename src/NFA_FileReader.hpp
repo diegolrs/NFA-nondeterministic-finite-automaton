@@ -11,9 +11,9 @@
 #include "AlphabetSymbol.hpp"
 #include "State.hpp"
 #include "Transition.hpp"
-#include "DFA_ReadedData.hpp"
+#include "NFA_ReadedData.hpp"
 
-namespace DFA_FileReader
+namespace NFA_FileReader
 {
     // Constants used in text file
     const std::string DELIMETER = ",";
@@ -24,7 +24,7 @@ namespace DFA_FileReader
     const std::string TRANSITION_FILE_TAG = "transicoes"; 
     const std::string EPSILON_FILE_TAG = "epsilon"; 
 
-    DFA_ReadedData ReadFile(std::string address);
+    NFA_ReadedData ReadFile(std::string address);
 
     MyList<std::string>* ReadAlphabet(std::string alphabetLine);
     MyList<std::string>* ReadStates(std::string statesLine);

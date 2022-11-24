@@ -3,6 +3,7 @@
 #include <string>
 #include "Utils/MyList.hpp"
 
+//Transition data readed from file
 struct Transition_ReadedData
 {
     std::string initialState;
@@ -10,8 +11,8 @@ struct Transition_ReadedData
     std::string transitionSymbol;
 };
 
-//Deterministic Finite Automaton data readed from file
-struct DFA_ReadedData
+//Nondeterministic Finite Automaton data readed from file
+struct NFA_ReadedData
 {  
     MyList<std::string>* alphabet;
     MyList<std::string>* states;

@@ -1,8 +1,8 @@
 #include <iostream>
 #include <string>
 #include "Utils/MyList.hpp"
-#include "DFA_FileReader.hpp"
-#include "DFA_Machine.hpp"
+#include "NFA_FileReader.hpp"
+#include "NFA_Machine.hpp"
 #include "Exceptions/Exception.hpp"
 
 #include "AlphabetSymbol.hpp"
@@ -10,7 +10,7 @@
 #include "State.hpp"
 
 using namespace std;
-using namespace DFA_FileReader;
+using namespace NFA_FileReader;
 
 const std::string FILE_ADDRESS = "../afn7.txt";
 
@@ -31,55 +31,26 @@ void TestDFAReader()
 {
     try
     {
-        DFA_ReadedData data =  DFA_FileReader::ReadFile(FILE_ADDRESS);
-        DFA_Machine* machine = new DFA_Machine(data);
+        NFA_ReadedData data =  NFA_FileReader::ReadFile(FILE_ADDRESS);
+        NFA_Machine* machine = new NFA_Machine(data);
 
-        //cout << machine->ToString();
+        int maxInterations = 2;
+        int curInteration = 0;
 
-        // for(int i = 0; i < 10; i++)
-        // {
-        //     if((i%2) == 0){
-        //         machine->ProcessSymbol(AlphabetSymbol("0"));
-        //     }else{
-        //         machine->ProcessSymbol(AlphabetSymbol("1"));
-        //     }
-        // }
+        machine->ProcessEpsilon(curInteration, maxInterations);
+        curInteration++;
 
-        // machine->ProcessSymbol(AlphabetSymbol("0"));
-        // machine->ProcessSymbol(AlphabetSymbol("0"));
-        // machine->ProcessSymbol(AlphabetSymbol("1"));
-        // machine->ProcessSymbol(AlphabetSymbol("0"));
-        // machine->ProcessSymbol(AlphabetSymbol("1"));
-
-
-        //cout << "-----Processment-----" << endl;
-        // machine->ProcessSymbol(AlphabetSymbol("0"));
-        // machine->ProcessSymbol(AlphabetSymbol("0"));
-        // machine->ProcessSymbol(AlphabetSymbol("0"));
-        // machine->ProcessSymbol(AlphabetSymbol("0"));
-
-        machine->ProcessEpsilon(-1);
-
-        machine->ProcessSymbol(AlphabetSymbol("1"), 0);
-        machine->ProcessEpsilon(0);
-        machine->ProcessSymbol(AlphabetSymbol("0"), 1);
-        machine->ProcessEpsilon(1);
-
-        // machine->ProcessSymbol(AlphabetSymbol("1"), 1);
-        // machine->ProcessSymbol(AlphabetSymbol("0"), 2);
-        // machine->ProcessSymbol(AlphabetSymbol("1"), 3);
-        // machine->ProcessSymbol(AlphabetSymbol("0"), 4);
-
-        //machine->ProcessSymbol(AlphabetSymbol("0"));
-        //machine->ProcessSymbol(AlphabetSymbol("1"));
-        //machine->ProcessSymbol(AlphabetSymbol("1"));
+        machine->ProcessSymbol(AlphabetSymbol("1"), curInteration, maxInterations);
+        machine->ProcessEpsilon(curInteration, maxInterations);
+        curInteration++;
+        machine->ProcessSymbol(AlphabetSymbol("0"), curInteration, maxInterations);
+        machine->ProcessEpsilon(curInteration, maxInterations);
 
         //cout << machine->GetProcessChain() << endl;
-        if (machine->IsOnFinalState()){
-           cout << "Cadeia eh aceita" << endl;
-        }else{
-            cout << "Cadeia nao eh aceita" << endl;
-        }
+        if (machine->IsOnFinalState())
+           cout << "\n\nA cadeia fornecida eh reconhecida pelo automato" << endl;
+        else
+            cout << "\n\nA cadeia fornecida nao eh reconhecida pelo automato" << endl;
     }
     catch(FileNotFoundException e)
     {
@@ -102,19 +73,6 @@ void TestStrSplit()
     for(int i = 0; i < l->Length(); i++)
         cout << l->At(i) << endl;
 }
-
-MyList<NFA_Chain> RetornaStruct()
-{
-    MyList<NFA_Chain> c = MyList<NFA_Chain>();
-    c.Push(NFA_Chain(nullptr, nullptr));
-    return c;
-}
-
-NFA_Chain RetornaChain()
-{
-    return NFA_Chain(nullptr, nullptr);
-}
-
 
 int main()
 {

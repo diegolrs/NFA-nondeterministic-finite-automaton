@@ -43,24 +43,22 @@ bool State::IsAFinalState()
     return this->_isAFinalState;
 }
 
-bool State::operator==(State other)
+bool State::IsEquals(State other)
 {
-    return this->GetName() == other.GetName();
+    return GetName() == other.GetName();
 }
-
-// bool State::operator==(State* other)
-// {
-//     return GetName() == other->GetName();
-// }
 
 bool State::IsEquals(State* other)
 {
     return GetName() == other->GetName();
 }
 
-bool State::CanProcessSymbol(AlphabetSymbol s){
-    for(int i = 0; i < _transitions->Length(); i++){
-        if (_transitions->At(i)->GetTransitionSymbol()->IsEquals(s)){
+bool State::CanProcessSymbol(AlphabetSymbol s)
+{
+    for(int i = 0; i < _transitions->Length(); i++)
+    {
+        if (_transitions->At(i)->GetTransitionSymbol()->IsEquals(s))
+        {
             return true;
         }
     }
@@ -69,12 +67,7 @@ bool State::CanProcessSymbol(AlphabetSymbol s){
 
 bool State::CanProcessSymbol(AlphabetSymbol* s)
 {
-    for(int i = 0; i < _transitions->Length(); i++){
-        if (_transitions->At(i)->GetTransitionSymbol()->IsEquals(s)){
-            return true;
-        }
-    }
-    return false;
+    return CanProcessSymbol(AlphabetSymbol(s->GetValue()));
 }
 
 MyList<State*> State::ProcessSymbol(AlphabetSymbol s)
@@ -90,6 +83,11 @@ MyList<State*> State::ProcessSymbol(AlphabetSymbol s)
     }
 
     return states;
+}
+
+MyList<State*> State::ProcessSymbol(AlphabetSymbol* s)
+{
+    return ProcessSymbol(s->GetValue());
 }
 
 std::vector<State*> State::ProcessSymbol2(AlphabetSymbol* s)
