@@ -18,13 +18,13 @@ class State
 
         bool IsAFinalState();
 
-        bool operator==(State other);
-        // bool operator==(State* other);
+        bool IsEquals(State other);
         bool IsEquals(State* other);
 
         bool CanProcessSymbol(AlphabetSymbol s);
         bool CanProcessSymbol(AlphabetSymbol* s);
         MyList<State*> ProcessSymbol(AlphabetSymbol s);
+        MyList<State*> ProcessSymbol(AlphabetSymbol* s);
         std::vector<State*> ProcessSymbol2(AlphabetSymbol s);
         std::vector<State*> ProcessSymbol2(AlphabetSymbol* s);
         State* ProcessEpsilon();

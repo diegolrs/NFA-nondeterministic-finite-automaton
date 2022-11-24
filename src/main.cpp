@@ -103,19 +103,6 @@ void TestStrSplit()
         cout << l->At(i) << endl;
 }
 
-MyList<NFA_Chain> RetornaStruct()
-{
-    MyList<NFA_Chain> c = MyList<NFA_Chain>();
-    c.Push(NFA_Chain(nullptr, nullptr));
-    return c;
-}
-
-NFA_Chain RetornaChain()
-{
-    return NFA_Chain(nullptr, nullptr);
-}
-
-
 int main()
 {
     //TestTransitions();

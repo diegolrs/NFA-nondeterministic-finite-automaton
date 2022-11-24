@@ -7,8 +7,6 @@
 #include "AlphabetSymbol.hpp"
 #include "State.hpp"
 #include "Transition.hpp"
-#include "StateAfn.hpp"
-#include "NFA_Chain.hpp"
 
 //Deterministic Finite Automaton Machine
 class DFA_Machine
@@ -29,12 +27,12 @@ class DFA_Machine
         MyList<State*>* states;
 
         State* initialState;
-        //MyList<StateAfn*>* currentState; 
-        std::vector<StateAfn*>* currentState; 
-        StateAfn* trapState;
+        MyList<State*>* currentState; 
+        State* crashState;
 
         MyList<Transition*>* transitions;
         
+        bool IsACurrentState(State* s);
         bool ContainsState(State* s);
         int IndexOfState(State* s);
         int IndexOfSymbol(AlphabetSymbol* s);
