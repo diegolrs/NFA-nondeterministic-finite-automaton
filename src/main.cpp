@@ -12,7 +12,7 @@
 using namespace std;
 using namespace DFA_FileReader;
 
-const std::string FILE_ADDRESS = "../afn5.txt";
+const std::string FILE_ADDRESS = "../afn7.txt";
 
 void TestTransitions()
 {
@@ -58,17 +58,23 @@ void TestDFAReader()
         // machine->ProcessSymbol(AlphabetSymbol("0"));
         // machine->ProcessSymbol(AlphabetSymbol("0"));
 
-        machine->ProcessSymbol(AlphabetSymbol("1"));
-        machine->ProcessSymbol(AlphabetSymbol("1"));
-        machine->ProcessSymbol(AlphabetSymbol("0"));
-        machine->ProcessSymbol(AlphabetSymbol("1"));
-        machine->ProcessSymbol(AlphabetSymbol("0"));
+        machine->ProcessEpsilon(-1);
+
+        machine->ProcessSymbol(AlphabetSymbol("1"), 0);
+        machine->ProcessEpsilon(0);
+        machine->ProcessSymbol(AlphabetSymbol("0"), 1);
+        machine->ProcessEpsilon(1);
+
+        // machine->ProcessSymbol(AlphabetSymbol("1"), 1);
+        // machine->ProcessSymbol(AlphabetSymbol("0"), 2);
+        // machine->ProcessSymbol(AlphabetSymbol("1"), 3);
+        // machine->ProcessSymbol(AlphabetSymbol("0"), 4);
 
         //machine->ProcessSymbol(AlphabetSymbol("0"));
         //machine->ProcessSymbol(AlphabetSymbol("1"));
         //machine->ProcessSymbol(AlphabetSymbol("1"));
 
-        cout << machine->GetProcessChain() << endl;
+        //cout << machine->GetProcessChain() << endl;
         if (machine->IsOnFinalState()){
            cout << "Cadeia eh aceita" << endl;
         }else{

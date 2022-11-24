@@ -23,8 +23,10 @@ class State
         bool IsEquals(State* other);
 
         bool CanProcessSymbol(AlphabetSymbol s);
+        bool CanProcessSymbol(AlphabetSymbol* s);
         MyList<State*> ProcessSymbol(AlphabetSymbol s);
         std::vector<State*> ProcessSymbol2(AlphabetSymbol s);
+        std::vector<State*> ProcessSymbol2(AlphabetSymbol* s);
         State* ProcessEpsilon();
     private:
         std::string _name;

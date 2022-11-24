@@ -5,12 +5,14 @@
 class AlphabetSymbol
 {
     public:
-        AlphabetSymbol();
-        AlphabetSymbol(std::string value);
+        AlphabetSymbol(); // Start as epsilon
+        AlphabetSymbol(std::string value); // Start as a value
+
         std::string GetValue();
-        bool IsEpsilon(AlphabetSymbol s);
+        bool IsEpsilon();
 
         bool IsEquals(AlphabetSymbol s);
+        bool IsEquals(AlphabetSymbol* s);
         bool operator==(AlphabetSymbol other);
     private:
         std::string _value;

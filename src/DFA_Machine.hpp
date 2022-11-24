@@ -19,8 +19,8 @@ class DFA_Machine
 
         std::string GetProcessChain();
         bool IsOnFinalState();
-        void ProcessSymbol(AlphabetSymbol sim);
-        void ProcessEpsilon();
+        void ProcessSymbol(AlphabetSymbol sim, int index);
+        void ProcessEpsilon(int index);
     private:
         const std::string TRAP_STATE_NAME = "Trap State";
         const std::string CRASH_STATUS_NAME = "CRASH";

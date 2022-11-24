@@ -67,6 +67,16 @@ bool State::CanProcessSymbol(AlphabetSymbol s){
     return false;
 }
 
+bool State::CanProcessSymbol(AlphabetSymbol* s)
+{
+    for(int i = 0; i < _transitions->Length(); i++){
+        if (_transitions->At(i)->GetTransitionSymbol()->IsEquals(s)){
+            return true;
+        }
+    }
+    return false;
+}
+
 MyList<State*> State::ProcessSymbol(AlphabetSymbol s)
 {
     MyList<State*> states = MyList<State*>();
@@ -80,6 +90,11 @@ MyList<State*> State::ProcessSymbol(AlphabetSymbol s)
     }
 
     return states;
+}
+
+std::vector<State*> State::ProcessSymbol2(AlphabetSymbol* s)
+{
+    return this->ProcessSymbol2(AlphabetSymbol(s->GetValue()));
 }
 
 std::vector<State*> State::ProcessSymbol2(AlphabetSymbol s)
