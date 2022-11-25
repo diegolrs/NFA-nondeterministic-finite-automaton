@@ -27,24 +27,28 @@ void TestTransitions()
     cout << q0->GetTransitionsStr();
 }
 
-void TestDFAReader()
+void TestDFAReader(MyList<AlphabetSymbol> *c)
 {
     try
     {
         NFA_ReadedData data =  NFA_FileReader::ReadFile(FILE_ADDRESS);
         NFA_Machine* machine = new NFA_Machine(data);
 
-        int maxInterations = 2;
+        int maxInterations = c->Length();
         int curInteration = 0;
 
-        machine->ProcessEpsilon(curInteration, maxInterations);
-        curInteration++;
-
-        machine->ProcessSymbol(AlphabetSymbol("1"), curInteration, maxInterations);
-        machine->ProcessEpsilon(curInteration, maxInterations);
-        curInteration++;
-        machine->ProcessSymbol(AlphabetSymbol("0"), curInteration, maxInterations);
-        machine->ProcessEpsilon(curInteration, maxInterations);
+        for (int i = 0; i < c->Length(); i++)
+        {
+            if (i == 0)
+            {
+                machine->ProcessEpsilon(curInteration, maxInterations);
+                curInteration++;
+            }
+            
+            machine->ProcessSymbol(c->At(i).GetValue(), curInteration, maxInterations);
+            machine->ProcessEpsilon(curInteration, maxInterations);
+            curInteration++;
+        }
 
         //cout << machine->GetProcessChain() << endl;
         if (machine->IsOnFinalState())
@@ -76,8 +80,21 @@ void TestStrSplit()
 
 int main()
 {
+    MyList<AlphabetSymbol> *chain = new MyList<AlphabetSymbol>();
+    string symbols;
+ 
+    cout << "Digite os elementos da cadeia: " << endl;
+    getline(cin, symbols);
+
+    for(int i = 0; i < symbols.size(); i++) 
+    {
+        string symbol(1, symbols[i]);
+        chain->Push(AlphabetSymbol(symbol));
+    }
+
+
     //TestTransitions();
-    TestDFAReader();
+    TestDFAReader(chain);
     //TestStrSplit();
 
     // NFA_Chain c = NFA_Chain(nullptr, nullptr);
