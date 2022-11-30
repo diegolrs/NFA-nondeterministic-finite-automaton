@@ -12,7 +12,7 @@
 using namespace std;
 using namespace NFA_FileReader;
 
-const std::string FILE_ADDRESS = "../afn7.txt";
+const std::string FILE_ADDRESS = "../4a.txt";
 
 void TestTransitions()
 {
@@ -78,8 +78,36 @@ void TestStrSplit()
         cout << l->At(i) << endl;
 }
 
+#include "Utils/NaryTree.hpp"
+void TestTree()
+{
+    State* initial = new State("q0");
+    NaryTree_Node<State*>* root = new NaryTree_Node<State*>();
+    root->SetContent(initial);
+
+    NaryTree<State*>* tree = new NaryTree<State*>();
+    tree->SetRoot(root);
+
+    State* q1 = new State("q1");
+    State* q2 = new State("q2");
+    State* q2q3 = new State("q3");
+
+    NaryTree_Node<State*>* n1 = new NaryTree_Node<State*>(root, q1);
+    tree->GetRoot()->AddChildren(n1);
+
+    NaryTree_Node<State*>* n2 = new NaryTree_Node<State*>(root, q2);
+    tree->GetRoot()->AddChildren(n2);
+
+    NaryTree_Node<State*>* n23 = new NaryTree_Node<State*>(n2, q2q3);
+    tree->GetRoot()->GetChildren()->At(1)->AddChildren(n23);
+    cout << "ok";
+}
+
 int main()
 {
+    TestTree();
+    return -2;
+
     MyList<AlphabetSymbol> *chain = new MyList<AlphabetSymbol>();
     string symbols;
  
@@ -94,7 +122,8 @@ int main()
 
 
     //TestTransitions();
-    TestDFAReader(chain);
+    //TestDFAReader(chain);
+    TestTree();
     //TestStrSplit();
 
     // NFA_Chain c = NFA_Chain(nullptr, nullptr);
