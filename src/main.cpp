@@ -86,21 +86,23 @@ void TestTree()
     root->SetContent(initial);
 
     NaryTree<State*>* tree = new NaryTree<State*>();
-    tree->SetRoot(root);
+    //tree->SetRoot(root);
 
     State* q1 = new State("q1");
     State* q2 = new State("q2");
-    State* q2q3 = new State("q3");
+    State* q3 = new State("q3");
 
-    NaryTree_Node<State*>* n1 = new NaryTree_Node<State*>(root, q1);
-    tree->GetRoot()->AddChildren(n1);
+    NaryTree_Node<State*>* n1 = new NaryTree_Node<State*>(q1, root, 1);
+    NaryTree_Node<State*>* n2 = new NaryTree_Node<State*>(q2, root, 1);
+    NaryTree_Node<State*>* n3 = new NaryTree_Node<State*>(q3, n2, 2);
+    
+    NaryTree_Node<State*>* s = root;
 
-    NaryTree_Node<State*>* n2 = new NaryTree_Node<State*>(root, q2);
-    tree->GetRoot()->AddChildren(n2);
-
-    NaryTree_Node<State*>* n23 = new NaryTree_Node<State*>(n2, q2q3);
-    tree->GetRoot()->GetChildren()->At(1)->AddChildren(n23);
-    cout << "ok";
+    while(s != nullptr)
+    {
+        cout << "->" << s->GetContent()->GetName();
+        s = s->GetParent();
+    }
 }
 
 int main()

@@ -3,6 +3,7 @@
 #include "MyList.hpp"
 
 #define DEFAULT_VALUE T()
+#define INVALID_INDEX_POSITION -2
 
 template <typename T>
 class NaryTree_Node
@@ -10,34 +11,34 @@ class NaryTree_Node
     private:
         T content;
         NaryTree_Node<T> *parent;
-        MyList<NaryTree_Node<T>*> *children;
+        int height;
     public:
         NaryTree_Node<T>();
-        NaryTree_Node<T>(NaryTree_Node<T>* parent, T content);
+        NaryTree_Node<T>(T content, NaryTree_Node<T>* parent, int height);
 
         T GetContent();
         NaryTree_Node<T> *GetParent();
-        MyList<NaryTree_Node<T>*> *GetChildren();
+        int GetHeight();
 
         void SetContent(T value);
         void SetParent(NaryTree_Node<T>* parent);
-        void AddChildren(NaryTree_Node<T>* child);
+        void SetHeight(int value);    
 };
 
 template <typename T>
 NaryTree_Node<T>::NaryTree_Node()
 {
     this->parent = nullptr;
-    this->children = new MyList<NaryTree_Node<T>*>();
     this->content = DEFAULT_VALUE;
+    this->height = INVALID_INDEX_POSITION;
 }
 
 template <typename T>
-NaryTree_Node<T>::NaryTree_Node(NaryTree_Node<T>* parent, T content)
+NaryTree_Node<T>::NaryTree_Node(T content, NaryTree_Node<T>* parent, int height)
 {
     this->parent = parent;
-    this->children = new MyList<NaryTree_Node<T>*>();
     this->content = content;
+    this->height = height;
 }
 
 template <typename T>
@@ -53,9 +54,9 @@ NaryTree_Node<T>* NaryTree_Node<T>::GetParent()
 }
 
 template <typename T>
-MyList<NaryTree_Node<T>*>* NaryTree_Node<T>::GetChildren()
+int NaryTree_Node<T>::GetHeight()
 {
-    return children;
+    return height;
 }
 
 template <typename T>
@@ -71,7 +72,7 @@ void NaryTree_Node<T>::SetParent(NaryTree_Node<T> *parent)
 }
 
 template <typename T>
-void NaryTree_Node<T>::AddChildren(NaryTree_Node<T>* child)
+void NaryTree_Node<T>::SetHeight(int value)
 {
-    this->children->Push(child);
+    this->height = height;
 }
