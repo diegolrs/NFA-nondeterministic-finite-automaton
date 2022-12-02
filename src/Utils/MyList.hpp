@@ -18,7 +18,8 @@ class MyList
         int Length();
         int GetIndexOf(T value);   
 
-        T At(int pos);    
+        T At(int pos);   
+        T GetLast();   
         void SetAt(int pos, T value);
 
         void PushOnBeginning(T value);
@@ -95,6 +96,26 @@ T MyList<T>::At(int pos)
     }
     
     return aux->getContent(); 
+}
+
+template <typename T>
+T MyList<T>::GetLast()
+{
+    if (IsEmpty() || head == nullptr)
+    {
+        return DEFAULT_RETURN;
+    }
+
+    Node<T> *last;
+    Node<T> *aux = head;
+
+    while(aux != nullptr)
+    {
+        last = aux;
+        aux = aux->getNextNode();
+    }
+    
+    return last->getContent(); 
 }
 
 template <typename T>

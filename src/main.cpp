@@ -45,7 +45,7 @@ void TestDFAReader(MyList<AlphabetSymbol> *c, string arquivo)
                 s = s->GetParent();  
             }
 
-            Transition* _transition = chainList.At(chainList.Length()-1);
+            Transition* _transition = chainList.GetLast();
             cout << _transition->GetDestinationState()->GetName();
 
             for(int j = chainList.Length()-2; j >= 0; j--)
@@ -76,7 +76,7 @@ void TestDFAReader(MyList<AlphabetSymbol> *c, string arquivo)
                 s = s->GetParent();
             }
 
-            Transition* _transition = chainList.At(chainList.Length()-1);
+            Transition* _transition = chainList.GetLast();
             cout << _transition->GetDestinationState()->GetName();
 
             for(int j = chainList.Length()-2; j >= 0; j--)
@@ -145,6 +145,7 @@ int main()
 
         NFA_ReadedData dataReadedFromFile =  NFA_FileReader::ReadFile(fileName);
         NFA_Machine* machine = new NFA_Machine(dataReadedFromFile);
+        NaryTree<Transition*>* chain = machine->StartProcessment(machine, chainToProcess);
 
         TestDFAReader(chainToProcess, fileName);
     }
