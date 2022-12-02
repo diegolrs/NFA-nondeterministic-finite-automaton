@@ -5,6 +5,7 @@
 #include "Utils/MyList.hpp"
 #include "NFA_FileReader.hpp"
 #include "NFA_Machine.hpp"
+#include "NFA_Printer.hpp"
 #include "Exceptions/Exception.hpp"
 
 #include "Utils/NaryTree.hpp"
@@ -17,8 +18,6 @@ using namespace NFA_FileReader;
 
 const std::string REQUEST_FILE_NAME_MSG = "Digite o nome do arquivo: ";
 const std::string REQUEST_CHAIN_TO_PROCCESS_MSG = "Digite os elementos da cadeia: ";
-const std::string CHAIN_IS_ACCEPTED_MSG = "A cadeia processada eh aceita. \n";
-const std::string CHAIN_IS_NOT_ACCEPTED_MSG = "A cadeia processada nao eh aceita. \n";
 
 void TestDFAReader(MyList<AlphabetSymbol> *c, string arquivo)
 {
@@ -145,9 +144,9 @@ int main()
 
         NFA_ReadedData dataReadedFromFile =  NFA_FileReader::ReadFile(fileName);
         NFA_Machine* machine = new NFA_Machine(dataReadedFromFile);
-        NaryTree<Transition*>* chain = machine->StartProcessment(machine, chainToProcess);
+        NaryTree<Transition*>* processmentTree = machine->StartProcessment(machine, chainToProcess);
 
-        TestDFAReader(chainToProcess, fileName);
+        NFA_Printer::PrintProcessmentTree(processmentTree);
     }
     catch(FileNotFoundException e)
     {
