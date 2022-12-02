@@ -55,6 +55,7 @@ int main()
         NFA_Machine* machine = new NFA_Machine(dataReadedFromFile);
         NaryTree<Transition*>* processmentTree = machine->StartProcessment(machine, chainToProcess);
 
+        cout << machine->ToString();
         NFA_Printer::PrintProcessmentTree(processmentTree);
     }
     catch(FileNotFoundException e)

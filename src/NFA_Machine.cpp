@@ -62,25 +62,25 @@ std::string NFA_Machine::ToString()
 {
     std::string s = "";
 
-    s += "\n-----Alphabet-----\n";
+    s += "\n\n-----Alphabet-----\n";
     for(int i = 0; i < alphabet->Length(); i++)
         s += alphabet->At(i)->GetValue() + " ";
 
-    s += "\n-----States-----\n";
+    s += "\n\n-----States-----\n";
     for(int i = 0; i < states->Length(); i++)
         s += states->At(i)->GetName() + " ";
 
-    s += "\n-----Initial state-----\n";
+    s += "\n\n-----Initial state-----\n";
     s += initialState->GetName() + " ";   
 
-    s += "\n-----End States-----\n";
+    s += "\n\n-----End States-----\n";
     for(int i = 0; i < states->Length(); i++)
     {
         if(states->At(i)->IsAFinalState())
             s += states->At(i)->GetName() + " ";
     }
 
-    s += "\n-----Transitions-----\n";
+    s += "\n\n-----Transitions-----\n";
     for(int i = 0; i < states->Length(); i++)
     {
         s += states->At(i)->GetTransitionsStr();
@@ -200,6 +200,7 @@ void NFA_Machine::ProcessEpsilon(int iterationIndex, NaryTree<Transition*>* proc
                 // add new state at the same level as the parent node in the processment tree
                 Transition* _chainProcessed = new Transition(_states.At(j), epsilon);
                 processmentTree->AddLeaf(_chainProcessed, node, node->GetHeight());
+                current.Push(processmentTree->GetLastAdded()); // allow new state to be processed by epsilon too
             }            
         }
     }
@@ -219,7 +220,7 @@ NaryTree<Transition*>* NFA_Machine::StartProcessment(NFA_Machine* machine, MyLis
     // Processing epsilon before initiate all symbols processing
     machine->ProcessEpsilon(firstEpsilonProcessingHeight, processmentTree);
     curInteration++;
-
+    
     // Processing all chain symbols
     for (int i = 0; i < chain->Length(); i++)
     {            
