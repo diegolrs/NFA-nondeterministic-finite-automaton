@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include "stdlib.h"
+
 #include "Utils/MyList.hpp"
 #include "NFA_FileReader.hpp"
 #include "NFA_Machine.hpp"
@@ -11,8 +13,6 @@
 
 using namespace std;
 using namespace NFA_FileReader;
-
-//const std::string FILE_ADDRESS = "../4b.txt";
 
 void TestTransitions()
 {
@@ -82,7 +82,7 @@ void TestDFAReader(MyList<AlphabetSymbol> *c, string arquivo)
         }
 
         MyList<NaryTree_Node<Transition*>*> endeds = chain->GetWithHeight(chain->GetMaxHeight());
-
+        
         for(int i = 0; i < endeds.Length(); i++)
         {
             NaryTree_Node<Transition*>* s = endeds.At(i);
@@ -140,54 +140,20 @@ void TestStrSplit()
 }
 
 #include "Utils/NaryTree.hpp"
-void TestTree()
+
+string RequestFileName()
 {
-    NaryTree<State*>* tree = new NaryTree<State*>();
-    //tree->SetRoot(root);
-
-    State* q0 = new State("q0");
-    State* q1 = new State("q1");
-    State* q2 = new State("q2");
-    State* q3 = new State("q3");
-
-    tree->AddLeaf(q0, nullptr);
-    NaryTree_Node<State*>* root = tree->GetWithHeight(0).At(0);
-
-    NaryTree_Node<State*>* n1 = new NaryTree_Node<State*>(q1, root, 1);
-    NaryTree_Node<State*>* n2 = new NaryTree_Node<State*>(q2, root, 1);
-    NaryTree_Node<State*>* n3 = new NaryTree_Node<State*>(q3, n2, 2);
-
-    tree->AddLeaf(q1, root);
-    tree->AddLeaf(q2, root);
-    
-    MyList<NaryTree_Node<State*>*> levels = tree->GetWithHeight(1);
-    tree->AddLeaf(q3, levels.At(0));
-
-    for(int i = 0; i < levels.Length(); i++)
-    {
-        cout << levels.At(i)->GetContent()->GetName() << " ";
-    }
-
-    NaryTree_Node<State*>* s = tree->GetWithHeight(2).At(0);
-    cout << s->GetContent()->GetName();
-    while(s != nullptr)
-    {
-        cout << "->" << s->GetContent()->GetName();
-        s = s->GetParent();
-    }
-
-    cout << endl;
+    string fileName;
+    cout << "Digite o nome do arquivo: " << endl;
+    getline(cin, fileName);
+    return fileName;
 }
 
-int main()
+MyList<AlphabetSymbol>* RequestChainToProcess()
 {
-    MyList<AlphabetSymbol> *chain = new MyList<AlphabetSymbol>();
     string symbols;
-    string arquivo;
+    MyList<AlphabetSymbol> *chain = new MyList<AlphabetSymbol>();
 
-    cout << "Digite o nome do arquivo: " << endl;
-    getline(cin, arquivo);
- 
     cout << "Digite os elementos da cadeia: " << endl;
     getline(cin, symbols);
 
@@ -197,8 +163,15 @@ int main()
         chain->Push(AlphabetSymbol(symbol));
     }
 
+    return chain;
+}
+
+int main()
+{
+    string fileName = RequestFileName();
+    MyList<AlphabetSymbol> *chain = RequestChainToProcess();
     //TestTransitions();
-    TestDFAReader(chain, arquivo);
+    TestDFAReader(chain, fileName);
     //TestTree();
     //TestStrSplit();
 

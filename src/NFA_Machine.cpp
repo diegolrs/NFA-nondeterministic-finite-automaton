@@ -58,7 +58,7 @@ NFA_Machine::NFA_Machine(NFA_ReadedData data)
     }
 
     chain = new NaryTree<Transition*>();
-    chain->AddLeaf(new Transition(initialState, nullptr), nullptr);
+    chain->AddLeaf(new Transition(initialState, nullptr), nullptr, 0);
 }
 
 std::string NFA_Machine::ToString()
