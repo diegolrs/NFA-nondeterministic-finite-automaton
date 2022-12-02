@@ -35,7 +35,6 @@ class NFA_Machine
         MyList<State*>* states;
 
         State* initialState;
-        MyList<State*>* currentState; 
         NaryTree<Transition*>* chain;
         State* crashState;
 

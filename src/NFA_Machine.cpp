@@ -57,10 +57,7 @@ NFA_Machine::NFA_Machine(NFA_ReadedData data)
         _init->AddTransition(_transition);
     }
 
-    currentState = new MyList<State*>();
     chain = new NaryTree<Transition*>();
-
-    currentState->Push(initialState);
     chain->AddLeaf(new Transition(initialState, nullptr), nullptr);
 }
 
@@ -131,13 +128,17 @@ int NFA_Machine::IndexOfSymbol(AlphabetSymbol* s)
 
 bool NFA_Machine::IsOnFinalState()
 {
-    for (int i = 0; i < currentState->Length(); i++)
+    int maxHeight = chain->GetMaxHeight();
+    MyList<NaryTree_Node<Transition*>*> lastsStates = chain->GetWithHeight(maxHeight);
+
+    for (int i = 0; i < lastsStates.Length(); i++)
     {
-        if (currentState->At(i)->IsAFinalState())
+        if (lastsStates.At(i)->GetContent()->GetDestinationState()->IsAFinalState())
         {
             return true;
         }
     }
+
     return false;
 }
 
@@ -154,26 +155,13 @@ std::string NFA_Machine::GetEndOfProcessingMessage(MyList<State*> l)
     return CHAIN_IS_NOT_ACCEPTED_MSG;
 }
 
-bool NFA_Machine::IsACurrentState(State* s)
-{
-    for (int i = 0; i < currentState->Length(); i++)
-    {
-        if (currentState->At(i)->IsEquals(s))
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
 void NFA_Machine::ProcessSymbol(AlphabetSymbol sim, int iterationIndex, int maxIndex)
 {
-    MyList<State*>* afnStates = new MyList<State*>();
     AlphabetSymbol* symbolRef = new AlphabetSymbol(sim.GetValue());
-    State* oldState;
+    MyList<NaryTree_Node<Transition*>*> current = chain->GetWithHeight(iterationIndex-1);
 
     NaryTree_Node<Transition*>* node;
-    MyList<NaryTree_Node<Transition*>*> current = chain->GetWithHeight(iterationIndex-1);
+    State* oldState;
 
     for(int i = 0; i < current.Length(); i++)
     {
@@ -207,9 +195,9 @@ void NFA_Machine::ProcessSymbol(AlphabetSymbol sim, int iterationIndex, int maxI
 void NFA_Machine::ProcessEpsilon(int iterationIndex, int maxIndex)
 {
     AlphabetSymbol* epsilon = new AlphabetSymbol();
+    MyList<NaryTree_Node<Transition*>*> current = chain->GetWithHeight(iterationIndex-1);
 
     NaryTree_Node<Transition*>* node;
-    MyList<NaryTree_Node<Transition*>*> current = chain->GetWithHeight(iterationIndex-1);
 
     for(int i = 0; i < current.Length(); i++)
     {

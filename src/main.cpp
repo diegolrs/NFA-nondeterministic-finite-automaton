@@ -48,12 +48,6 @@ void TestDFAReader(MyList<AlphabetSymbol> *c)
             curInteration++;
         }
 
-        //cout << machine->GetProcessChain() << endl;
-        // if (machine->IsOnFinalState())
-        //    cout << "\n\nA cadeia fornecida eh reconhecida pelo automato" << endl;
-        // else
-        //     cout << "\n\nA cadeia fornecida nao eh reconhecida pelo automato" << endl;
-
         NaryTree<Transition*>* chain = machine->GetChain();
         MyList<NaryTree_Node<Transition*>*> crashed = chain->GetWithHeight(NFA_Machine::CRASH_STATE_HEIGHT);
         AlphabetSymbol* symbol;
@@ -166,16 +160,6 @@ void TestTree()
     tree->AddLeaf(q1, root);
     tree->AddLeaf(q2, root);
     
-    // NaryTree_Node<State*>* s = root;
-
-    // while(s != nullptr)
-    // {
-    //     cout << "->" << s->GetContent()->GetName();
-    //     s = s->GetParent();
-    // }
-
-    // cout << endl;
-
     MyList<NaryTree_Node<State*>*> levels = tree->GetWithHeight(1);
     tree->AddLeaf(q3, levels.At(0));
 
@@ -209,36 +193,10 @@ int main()
         chain->Push(AlphabetSymbol(symbol));
     }
 
-
     //TestTransitions();
     TestDFAReader(chain);
     //TestTree();
     //TestStrSplit();
 
-    // NFA_Chain c = NFA_Chain(nullptr, nullptr);
-    // MyList<NFA_Chain> chain = RetornaStruct();//MyList<NFA_Chain>();
-    // chain.Push(c);
-
-    // for(int i = 0; i < 5000; i++)
-    // {
-    //     cout<<chain.Length();
-    //     NFA_Chain c2 = NFA_Chain(nullptr, nullptr);
-    //     chain.Push(c2);
-    // }
-
-    // cout << "sucesso";
-
-    // try
-    // {
-    //     Transition_ReadedData d;
-    //     d.destinState = "destino";
-    //     d.initialState = "inicio";
-    //     d.transitionSymbol = "simbolo";
-    //     throw InvalidTransitionFormatException(d);
-    // }
-    // catch (InvalidTransitionFormatException &e)
-    // {
-    //     std::cout << e.what() << std::endl;
-    // }
-    return{ 0 };
+    return 0;
 }
