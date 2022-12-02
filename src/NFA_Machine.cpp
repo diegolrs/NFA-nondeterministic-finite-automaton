@@ -58,10 +58,10 @@ NFA_Machine::NFA_Machine(NFA_ReadedData data)
     }
 
     currentState = new MyList<State*>();
-    chain = new NaryTree<State*>();
+    chain = new NaryTree<Transition*>();
 
     currentState->Push(initialState);
-    chain->AddLeaf(initialState, nullptr);
+    chain->AddLeaf(new Transition(initialState, nullptr), nullptr);
 }
 
 std::string NFA_Machine::ToString()
@@ -172,13 +172,13 @@ void NFA_Machine::ProcessSymbol(AlphabetSymbol sim, int iterationIndex, int maxI
     AlphabetSymbol* symbolRef = new AlphabetSymbol(sim.GetValue());
     State* oldState;
 
-    NaryTree_Node<State*>* node;
-    MyList<NaryTree_Node<State*>*> current = chain->GetWithHeight(iterationIndex-1);
+    NaryTree_Node<Transition*>* node;
+    MyList<NaryTree_Node<Transition*>*> current = chain->GetWithHeight(iterationIndex-1);
 
     for(int i = 0; i < current.Length(); i++)
     {
         node = current.At(i);
-        oldState = node->GetContent();
+        oldState = node->GetContent()->GetDestinationState();
 
         // Trying to process crashed state
         if (oldState->IsEquals(crashState))
@@ -192,13 +192,14 @@ void NFA_Machine::ProcessSymbol(AlphabetSymbol sim, int iterationIndex, int maxI
 
             for (int j = 0; j < _states.Length(); j++)
             {
-                afnStates->Push(_states.At(j));
-                chain->AddLeaf(_states.At(j), node, node->GetHeight()+1);
+                Transition* _chainProcessed = new Transition(_states.At(j), symbolRef);
+                chain->AddLeaf(_chainProcessed, node, node->GetHeight()+1);
             }
         }
         else
         {
-            chain->AddLeaf(crashState, node, CRASH_STATE_HEIGHT);
+            Transition* _chainProcessed = new Transition(crashState, symbolRef);
+            chain->AddLeaf(_chainProcessed, node, CRASH_STATE_HEIGHT);
         }
     }
 }
@@ -207,13 +208,13 @@ void NFA_Machine::ProcessEpsilon(int iterationIndex, int maxIndex)
 {
     AlphabetSymbol* epsilon = new AlphabetSymbol();
 
-    NaryTree_Node<State*>* node;
-    MyList<NaryTree_Node<State*>*> current = chain->GetWithHeight(iterationIndex-1);
+    NaryTree_Node<Transition*>* node;
+    MyList<NaryTree_Node<Transition*>*> current = chain->GetWithHeight(iterationIndex-1);
 
     for(int i = 0; i < current.Length(); i++)
     {
         node = current.At(i);
-        State* curState = node->GetContent();
+        State* curState = node->GetContent()->GetDestinationState();
 
         if (curState->IsEquals(crashState) || !curState->CanProcessSymbol(epsilon))
         {
@@ -227,14 +228,14 @@ void NFA_Machine::ProcessEpsilon(int iterationIndex, int maxIndex)
             if(!IsACurrentState(_states.At(j)))
             {
                 // adiciona estado novo na msm altura que o estado pai
-                chain->AddLeaf(_states.At(j), node, node->GetHeight());
-                currentState->Push(_states.At(j));
+                Transition* _chainProcessed = new Transition(_states.At(j), epsilon);
+                chain->AddLeaf(_chainProcessed, node, node->GetHeight());
             }            
         }
     }
 }
 
-NaryTree<State*>* NFA_Machine::GetChain()
+NaryTree<Transition*>* NFA_Machine::GetChain()
 {
     return chain;
 }

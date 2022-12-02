@@ -24,7 +24,7 @@ class NFA_Machine
         void ProcessSymbol(AlphabetSymbol sim, int iterationIndex, int maxIndex);
         void ProcessEpsilon(int iterationIndex, int maxIndex);
 
-        NaryTree<State*>* GetChain();
+        NaryTree<Transition*>* GetChain();
     private:
         const std::string TRAP_STATE_NAME = "Trap State";
         const std::string CRASH_STATUS_NAME = "CRASH";
@@ -36,7 +36,7 @@ class NFA_Machine
 
         State* initialState;
         MyList<State*>* currentState; 
-        NaryTree<State*>* chain;
+        NaryTree<Transition*>* chain;
         State* crashState;
 
         MyList<Transition*>* transitions;

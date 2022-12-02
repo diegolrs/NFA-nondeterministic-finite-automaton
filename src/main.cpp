@@ -12,7 +12,7 @@
 using namespace std;
 using namespace NFA_FileReader;
 
-const std::string FILE_ADDRESS = "../4a.txt";
+const std::string FILE_ADDRESS = "../4b.txt";
 
 void TestTransitions()
 {
@@ -54,42 +54,53 @@ void TestDFAReader(MyList<AlphabetSymbol> *c)
         // else
         //     cout << "\n\nA cadeia fornecida nao eh reconhecida pelo automato" << endl;
 
-        NaryTree<State*>* chain = machine->GetChain();
-        MyList<NaryTree_Node<State*>*> crashed = chain->GetWithHeight(NFA_Machine::CRASH_STATE_HEIGHT);
+        NaryTree<Transition*>* chain = machine->GetChain();
+        MyList<NaryTree_Node<Transition*>*> crashed = chain->GetWithHeight(NFA_Machine::CRASH_STATE_HEIGHT);
+        AlphabetSymbol* symbol;
 
         for(int i = 0; i < crashed.Length(); i++)
         {
-            NaryTree_Node<State*>* s = crashed.At(i);
+            NaryTree_Node<Transition*>* s = crashed.At(i);
 
             while(s != nullptr)
             {
-                cout << s->GetContent()->GetName();
+                cout << s->GetContent()->GetDestinationState()->GetName();
+                symbol = s->GetContent()->GetTransitionSymbol();
                 s = s->GetParent();
 
                 if(s != nullptr)
+                {
+                    cout << " <- (" << symbol->GetValue() << ")";
                     cout << " <- ";
+                }
+                    
             }
             cout << "\n";
         }
 
-        MyList<NaryTree_Node<State*>*> endeds = chain->GetWithHeight(chain->GetMaxHeight());
+        MyList<NaryTree_Node<Transition*>*> endeds = chain->GetWithHeight(chain->GetMaxHeight());
 
         for(int i = 0; i < endeds.Length(); i++)
         {
-            NaryTree_Node<State*>* s = endeds.At(i);
+            NaryTree_Node<Transition*>* s = endeds.At(i);
 
-            if(s->GetContent()->IsAFinalState())
+            if(s->GetContent()->GetDestinationState()->IsAFinalState())
                 cout << "V ";
             else
                 cout << "X ";
 
             while(s != nullptr)
             {
-                cout << s->GetContent()->GetName();
+                cout << s->GetContent()->GetDestinationState()->GetName();
+                symbol = s->GetContent()->GetTransitionSymbol();
+
                 s = s->GetParent();
 
                 if(s != nullptr)
+                {
+                    cout << " <- (" << symbol->GetValue() << ")";
                     cout << " <- ";
+                }
             }
             cout << "\n";
         }
