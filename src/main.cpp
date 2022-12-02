@@ -61,20 +61,29 @@ void TestDFAReader(MyList<AlphabetSymbol> *c)
         for(int i = 0; i < crashed.Length(); i++)
         {
             NaryTree_Node<Transition*>* s = crashed.At(i);
+            MyList<Transition*> chainList = MyList<Transition*>();
 
             while(s != nullptr)
             {
-                cout << s->GetContent()->GetDestinationState()->GetName();
-                symbol = s->GetContent()->GetTransitionSymbol();
-                s = s->GetParent();
-
-                if(s != nullptr)
-                {
-                    cout << " <- (" << symbol->GetValue() << ")";
-                    cout << " <- ";
-                }
-                    
+                chainList.Push(s->GetContent());
+                s = s->GetParent();  
             }
+
+            Transition* _transition = chainList.At(chainList.Length()-1);
+            cout << _transition->GetDestinationState()->GetName();
+
+            for(int j = chainList.Length()-2; j >= 0; j--)
+            {
+                Transition* _transition = chainList.At(j);
+
+                symbol = _transition->GetTransitionSymbol();
+
+                if(symbol != nullptr)
+                    cout << " -> " << symbol->GetValue() << " -> " ;
+
+                cout << _transition->GetDestinationState()->GetName();
+            }
+
             cout << "\n";
         }
 
@@ -83,25 +92,34 @@ void TestDFAReader(MyList<AlphabetSymbol> *c)
         for(int i = 0; i < endeds.Length(); i++)
         {
             NaryTree_Node<Transition*>* s = endeds.At(i);
-
-            if(s->GetContent()->GetDestinationState()->IsAFinalState())
-                cout << "V ";
-            else
-                cout << "X ";
+            MyList<Transition*> chainList = MyList<Transition*>();
 
             while(s != nullptr)
             {
-                cout << s->GetContent()->GetDestinationState()->GetName();
-                symbol = s->GetContent()->GetTransitionSymbol();
-
+                chainList.Push(s->GetContent());
                 s = s->GetParent();
-
-                if(s != nullptr)
-                {
-                    cout << " <- (" << symbol->GetValue() << ")";
-                    cout << " <- ";
-                }
             }
+
+            Transition* _transition = chainList.At(chainList.Length()-1);
+            cout << _transition->GetDestinationState()->GetName();
+
+            for(int j = chainList.Length()-2; j >= 0; j--)
+            {
+                _transition = chainList.At(j);
+
+                symbol = _transition->GetTransitionSymbol();
+
+                if(symbol != nullptr)
+                    cout << " -> " << symbol->GetValue() << " -> " ;
+
+                cout << _transition->GetDestinationState()->GetName();
+            }
+
+            if(chainList.At(0)->GetDestinationState()->IsAFinalState())
+                cout << " V";
+            else
+                cout << " X";
+
             cout << "\n";
         }
     }
