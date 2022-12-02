@@ -4,6 +4,7 @@
 #include "NFA_ReadedData.hpp"
 #include "Exceptions/NFA_Exceptions.hpp"
 
+#include "Utils/NaryTree.hpp"
 #include "AlphabetSymbol.hpp"
 #include "State.hpp"
 #include "Transition.hpp"
@@ -12,6 +13,8 @@
 class NFA_Machine
 {
     public:
+        static const int CRASH_STATE_HEIGHT = -4; // altura para setar nos estados que deram crash
+
         NFA_Machine(NFA_ReadedData data);
         std::string ToString();
 
@@ -20,6 +23,8 @@ class NFA_Machine
 
         void ProcessSymbol(AlphabetSymbol sim, int iterationIndex, int maxIndex);
         void ProcessEpsilon(int iterationIndex, int maxIndex);
+
+        NaryTree<Transition*>* GetChain();
     private:
         const std::string TRAP_STATE_NAME = "Trap State";
         const std::string CRASH_STATUS_NAME = "CRASH";
@@ -31,6 +36,7 @@ class NFA_Machine
 
         State* initialState;
         MyList<State*>* currentState; 
+        NaryTree<Transition*>* chain;
         State* crashState;
 
         MyList<Transition*>* transitions;
