@@ -19,26 +19,24 @@ class NFA_Machine
         std::string ToString();
 
         bool IsOnFinalState();
-        std::string GetEndOfProcessingMessage(MyList<State*> l);
 
-        void ProcessSymbol(AlphabetSymbol sim, int iterationIndex, int maxIndex);
-        void ProcessEpsilon(int iterationIndex, int maxIndex);
+        void ProcessSymbol(AlphabetSymbol sim, int iterationIndex);
+        void ProcessEpsilon(int iterationIndex);
+        NaryTree<Transition*>* StartProcessment();
 
         NaryTree<Transition*>* GetChain();
     private:
-        const std::string TRAP_STATE_NAME = "Trap State";
         const std::string CRASH_STATUS_NAME = "CRASH";
         const std::string CHAIN_IS_ACCEPTED_MSG = "A cadeia processada eh aceita. \n";
         const std::string CHAIN_IS_NOT_ACCEPTED_MSG = "A cadeia processada nao eh aceita. \n";
 
-        MyList<AlphabetSymbol*>* alphabet;
-        MyList<State*>* states;
+        MyList<AlphabetSymbol*>* alphabet; // All alphabet symbols
+        MyList<State*>* states; // All states
+        MyList<Transition*>* transitions; // All states transitions 
 
         State* initialState;
-        NaryTree<Transition*>* chain;
         State* crashState;
-
-        MyList<Transition*>* transitions;
+        NaryTree<Transition*>* processmentTree; // Process tree that will be generated while processing
         
         bool IsACurrentState(State* s);
         bool ContainsState(State* s);

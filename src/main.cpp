@@ -7,6 +7,7 @@
 #include "NFA_Machine.hpp"
 #include "Exceptions/Exception.hpp"
 
+#include "Utils/NaryTree.hpp"
 #include "AlphabetSymbol.hpp"
 #include "Transition.hpp"
 #include "State.hpp"
@@ -14,18 +15,8 @@
 using namespace std;
 using namespace NFA_FileReader;
 
-void TestTransitions()
-{
-    State* q0 = new State("q0");
-    State* q1 = new State("q1");
-    AlphabetSymbol* a = new AlphabetSymbol("a");
-    Transition* t =  new Transition(q1, a);
-    Transition* t2 = new Transition(q1, new AlphabetSymbol());
-
-    q0->AddTransition(t);
-    q0->AddTransition(t2);
-    cout << q0->GetTransitionsStr();
-}
+const std::string REQUEST_FILE_NAME_MSG = "Digite o nome do arquivo: ";
+const std::string REQUEST_CHAIN_TO_PROCCESS_MSG = "Digite os elementos da cadeia: ";
 
 void TestDFAReader(MyList<AlphabetSymbol> *c, string arquivo)
 {
@@ -38,16 +29,20 @@ void TestDFAReader(MyList<AlphabetSymbol> *c, string arquivo)
         int curInteration = 0;
         int firstEpsilonProcessingHeight = 1;
 
-        machine->ProcessEpsilon(firstEpsilonProcessingHeight, maxInterations);
+        machine->ProcessEpsilon(firstEpsilonProcessingHeight);
         curInteration++;
 
         for (int i = 0; i < c->Length(); i++)
         {            
-            machine->ProcessSymbol(c->At(i).GetValue(), curInteration, maxInterations);
-            machine->ProcessEpsilon(curInteration, maxInterations);
+            machine->ProcessSymbol(c->At(i).GetValue(), curInteration);
+            machine->ProcessEpsilon(curInteration);
             curInteration++;
         }
 
+
+        // ------------------------------
+        // --------- PRINT DATA ---------
+        // ------------------------------
         NaryTree<Transition*>* chain = machine->GetChain();
         MyList<NaryTree_Node<Transition*>*> crashed = chain->GetWithHeight(NFA_Machine::CRASH_STATE_HEIGHT);
         AlphabetSymbol* symbol;
@@ -129,22 +124,10 @@ void TestDFAReader(MyList<AlphabetSymbol> *c, string arquivo)
     }
 }
 
-#include "Utils/StringExtensions.hpp"
-void TestStrSplit()
-{
-    string b = "É parte da cura o desejo de ser curado.";
-    MyList<string>* l = StringExtensions::Split(b, " ");
-
-    for(int i = 0; i < l->Length(); i++)
-        cout << l->At(i) << endl;
-}
-
-#include "Utils/NaryTree.hpp"
-
 string RequestFileName()
 {
     string fileName;
-    cout << "Digite o nome do arquivo: " << endl;
+    cout << REQUEST_FILE_NAME_MSG << endl;
     getline(cin, fileName);
     return fileName;
 }
@@ -154,7 +137,7 @@ MyList<AlphabetSymbol>* RequestChainToProcess()
     string symbols;
     MyList<AlphabetSymbol> *chain = new MyList<AlphabetSymbol>();
 
-    cout << "Digite os elementos da cadeia: " << endl;
+    cout << REQUEST_CHAIN_TO_PROCCESS_MSG << endl;
     getline(cin, symbols);
 
     for(int i = 0; i < symbols.size(); i++) 
@@ -168,12 +151,26 @@ MyList<AlphabetSymbol>* RequestChainToProcess()
 
 int main()
 {
-    string fileName = RequestFileName();
-    MyList<AlphabetSymbol> *chain = RequestChainToProcess();
-    //TestTransitions();
-    TestDFAReader(chain, fileName);
-    //TestTree();
-    //TestStrSplit();
+    try
+    {
+        string fileName = RequestFileName();
+        MyList<AlphabetSymbol> *chainToProcess = RequestChainToProcess();
+
+        NFA_ReadedData dataReadedFromFile =  NFA_FileReader::ReadFile(fileName);
+        NFA_Machine* machine = new NFA_Machine(dataReadedFromFile);
+
+        TestDFAReader(chainToProcess, fileName);
+    }
+    catch(FileNotFoundException e)
+    {
+        std::cerr << e.GetMessage() << '\n';
+        exit(-1);
+    }
+    catch(InvalidTransitionFormatException e)
+    {
+        std::cerr << e.GetMessage() << '\n';
+        exit(-1);
+    }
 
     return 0;
 }
