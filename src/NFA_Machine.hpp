@@ -18,13 +18,11 @@ class NFA_Machine
         NFA_Machine(NFA_ReadedData data);
         std::string ToString();
 
-        bool IsOnFinalState();
+        bool IsOnFinalState(NaryTree<Transition*>* processmentTree);
 
-        void ProcessSymbol(AlphabetSymbol sim, int iterationIndex);
-        void ProcessEpsilon(int iterationIndex);
-        NaryTree<Transition*>* StartProcessment();
-
-        NaryTree<Transition*>* GetChain();
+        void ProcessSymbol(AlphabetSymbol sim, int iterationIndex, NaryTree<Transition*>* processmentTree);
+        void ProcessEpsilon(int iterationInde, NaryTree<Transition*>* processmentTreex);
+        NaryTree<Transition*>* StartProcessment(NFA_Machine* machine, MyList<AlphabetSymbol> *chain);
     private:
         const std::string CRASH_STATUS_NAME = "CRASH";
         const std::string CHAIN_IS_ACCEPTED_MSG = "A cadeia processada eh aceita. \n";
@@ -36,9 +34,9 @@ class NFA_Machine
 
         State* initialState;
         State* crashState;
-        NaryTree<Transition*>* processmentTree; // Process tree that will be generated while processing
+        //NaryTree<Transition*>* processmentTree; // will be generated while processing
         
-        bool IsACurrentState(State* s);
+        bool IsACurrentState(State* s, NaryTree<Transition*>* processmentTree);
         bool ContainsState(State* s);
         int IndexOfState(State* s);
         int IndexOfSymbol(AlphabetSymbol* s);

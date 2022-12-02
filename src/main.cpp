@@ -25,25 +25,10 @@ void TestDFAReader(MyList<AlphabetSymbol> *c, string arquivo)
         NFA_ReadedData data =  NFA_FileReader::ReadFile(arquivo);
         NFA_Machine* machine = new NFA_Machine(data);
 
-        int maxInterations = c->Length();
-        int curInteration = 0;
-        int firstEpsilonProcessingHeight = 1;
-
-        machine->ProcessEpsilon(firstEpsilonProcessingHeight);
-        curInteration++;
-
-        for (int i = 0; i < c->Length(); i++)
-        {            
-            machine->ProcessSymbol(c->At(i).GetValue(), curInteration);
-            machine->ProcessEpsilon(curInteration);
-            curInteration++;
-        }
-
-
         // ------------------------------
         // --------- PRINT DATA ---------
         // ------------------------------
-        NaryTree<Transition*>* chain = machine->GetChain();
+        NaryTree<Transition*>* chain = machine->StartProcessment(machine, c);
         MyList<NaryTree_Node<Transition*>*> crashed = chain->GetWithHeight(NFA_Machine::CRASH_STATE_HEIGHT);
         AlphabetSymbol* symbol;
 

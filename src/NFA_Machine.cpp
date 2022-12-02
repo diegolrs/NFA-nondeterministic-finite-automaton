@@ -56,9 +56,6 @@ NFA_Machine::NFA_Machine(NFA_ReadedData data)
         transitions->Push(_transition);
         _init->AddTransition(_transition);
     }
-
-    processmentTree = new NaryTree<Transition*>();
-    processmentTree->AddLeaf(new Transition(initialState, nullptr), nullptr, 0);
 }
 
 std::string NFA_Machine::ToString()
@@ -126,7 +123,7 @@ int NFA_Machine::IndexOfSymbol(AlphabetSymbol* s)
     return OUT_OF_INDEX;
 }
 
-bool NFA_Machine::IsOnFinalState()
+bool NFA_Machine::IsOnFinalState(NaryTree<Transition*>* processmentTree)
 {
     int maxHeight = processmentTree->GetMaxHeight();
     MyList<NaryTree_Node<Transition*>*> lastsStates = processmentTree->GetWithHeight(maxHeight);
@@ -142,7 +139,7 @@ bool NFA_Machine::IsOnFinalState()
     return false;
 }
 
-void NFA_Machine::ProcessSymbol(AlphabetSymbol sim, int iterationIndex)
+void NFA_Machine::ProcessSymbol(AlphabetSymbol sim, int iterationIndex, NaryTree<Transition*>* processmentTree)
 {
     AlphabetSymbol* symbolRef = new AlphabetSymbol(sim.GetValue());
     MyList<NaryTree_Node<Transition*>*> current = processmentTree->GetWithHeight(iterationIndex-1);
@@ -180,7 +177,7 @@ void NFA_Machine::ProcessSymbol(AlphabetSymbol sim, int iterationIndex)
 }
 
 // Verify if state is being processed right now
-bool NFA_Machine::IsACurrentState(State* s)
+bool NFA_Machine::IsACurrentState(State* s, NaryTree<Transition*>* processmentTree)
 {
     int maxHeight = processmentTree->GetMaxHeight();
     MyList<NaryTree_Node<Transition*>*> lastsStates = processmentTree->GetWithHeight(maxHeight);
@@ -195,7 +192,7 @@ bool NFA_Machine::IsACurrentState(State* s)
     return false;  
 }
 
-void NFA_Machine::ProcessEpsilon(int iterationIndex)
+void NFA_Machine::ProcessEpsilon(int iterationIndex, NaryTree<Transition*>* processmentTree)
 {
     AlphabetSymbol* epsilon = new AlphabetSymbol();
     MyList<NaryTree_Node<Transition*>*> current = processmentTree->GetWithHeight(iterationIndex-1);
@@ -214,7 +211,7 @@ void NFA_Machine::ProcessEpsilon(int iterationIndex)
 
         for (int j = 0; j < _states.Length(); j++)
         {
-            if(!IsACurrentState(_states.At(j)))
+            if(!IsACurrentState(_states.At(j), processmentTree))
             {
                 // add new state at the same level as the parent node in the processment tree
                 Transition* _chainProcessed = new Transition(_states.At(j), epsilon);
@@ -224,7 +221,28 @@ void NFA_Machine::ProcessEpsilon(int iterationIndex)
     }
 }
 
-NaryTree<Transition*>* NFA_Machine::GetChain()
+NaryTree<Transition*>* NFA_Machine::StartProcessment(NFA_Machine* machine, MyList<AlphabetSymbol> *chain)
 {
+    NaryTree<Transition*>* processmentTree = new NaryTree<Transition*>();
+
+    // Adding initial state
+    processmentTree->AddLeaf(new Transition(initialState, nullptr), nullptr, 0);
+
+    int maxInterations = chain->Length();
+    int curInteration = 0;
+    int firstEpsilonProcessingHeight = 1;
+
+    // Processing epsilon before initiate all symbols processing
+    machine->ProcessEpsilon(firstEpsilonProcessingHeight, processmentTree);
+    curInteration++;
+
+    // Processing all chain symbols
+    for (int i = 0; i < chain->Length(); i++)
+    {            
+        machine->ProcessSymbol(chain->At(i).GetValue(), curInteration, processmentTree);
+        machine->ProcessEpsilon(curInteration, processmentTree);
+        curInteration++;
+    }
+
     return processmentTree;
 }
