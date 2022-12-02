@@ -10,9 +10,11 @@ class NaryTree
         MyList<NaryTree_Node<T>*> children;
     public:
         NaryTree<T>();
+
         MyList<NaryTree_Node<T>*> GetWithHeight(int height);
+        NaryTree_Node<T>* GetLastAdded();
         int GetMaxHeight();
-        void AddLeaf(T content, NaryTree_Node<T>* parent);
+
         void AddLeaf(T content, NaryTree_Node<T>* parent, int height);
 };
 
@@ -39,9 +41,8 @@ MyList<NaryTree_Node<T>*> NaryTree<T>::GetWithHeight(int height)
 }
 
 template <typename T>
-void NaryTree<T>::AddLeaf(T content, NaryTree_Node<T>* parent)
+void NaryTree<T>::AddLeaf(T content, NaryTree_Node<T>* parent, int height)
 {
-    int height = parent == nullptr ? 0 : parent->GetHeight() +1;
     NaryTree_Node<T>* node = new NaryTree_Node<T>(content, parent, height);
 
     if(height > maxHeight)
@@ -51,14 +52,9 @@ void NaryTree<T>::AddLeaf(T content, NaryTree_Node<T>* parent)
 }
 
 template <typename T>
-void NaryTree<T>::AddLeaf(T content, NaryTree_Node<T>* parent, int height)
+NaryTree_Node<T>* NaryTree<T>::GetLastAdded()
 {
-    NaryTree_Node<T>* node = new NaryTree_Node<T>(content, parent, height);
-
-    if(height > maxHeight)
-        maxHeight = height;
-
-    children.Push(node);
+    return children.GetLast();
 }
 
 template <typename T>
