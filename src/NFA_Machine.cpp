@@ -192,6 +192,19 @@ void NFA_Machine::ProcessSymbol(AlphabetSymbol sim, int iterationIndex, int maxI
     }
 }
 
+bool NFA_Machine::IsACurrentState(State* s){
+    int maxHeight = chain->GetMaxHeight();
+    MyList<NaryTree_Node<Transition*>*> lastsStates = chain->GetWithHeight(maxHeight);
+    for (int i = 0; i < lastsStates.Length(); i++)
+    {
+        if (lastsStates.At(i)->GetContent()->GetDestinationState()->IsEquals(s))
+        {
+            return true;
+        }
+    }
+    return false;  
+}
+
 void NFA_Machine::ProcessEpsilon(int iterationIndex, int maxIndex)
 {
     AlphabetSymbol* epsilon = new AlphabetSymbol();

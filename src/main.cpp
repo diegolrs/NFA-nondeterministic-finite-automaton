@@ -12,7 +12,7 @@
 using namespace std;
 using namespace NFA_FileReader;
 
-const std::string FILE_ADDRESS = "../4b.txt";
+//const std::string FILE_ADDRESS = "../4b.txt";
 
 void TestTransitions()
 {
@@ -27,11 +27,11 @@ void TestTransitions()
     cout << q0->GetTransitionsStr();
 }
 
-void TestDFAReader(MyList<AlphabetSymbol> *c)
+void TestDFAReader(MyList<AlphabetSymbol> *c, string arquivo)
 {
     try
     {
-        NFA_ReadedData data =  NFA_FileReader::ReadFile(FILE_ADDRESS);
+        NFA_ReadedData data =  NFA_FileReader::ReadFile(arquivo);
         NFA_Machine* machine = new NFA_Machine(data);
 
         int maxInterations = c->Length();
@@ -183,6 +183,10 @@ int main()
 {
     MyList<AlphabetSymbol> *chain = new MyList<AlphabetSymbol>();
     string symbols;
+    string arquivo;
+
+    cout << "Digite o nome do arquivo: " << endl;
+    getline(cin, arquivo);
  
     cout << "Digite os elementos da cadeia: " << endl;
     getline(cin, symbols);
@@ -194,7 +198,7 @@ int main()
     }
 
     //TestTransitions();
-    TestDFAReader(chain);
+    TestDFAReader(chain, arquivo);
     //TestTree();
     //TestStrSplit();
 
