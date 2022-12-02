@@ -17,6 +17,8 @@ using namespace NFA_FileReader;
 
 const std::string REQUEST_FILE_NAME_MSG = "Digite o nome do arquivo: ";
 const std::string REQUEST_CHAIN_TO_PROCCESS_MSG = "Digite os elementos da cadeia: ";
+const std::string CHAIN_IS_ACCEPTED_MSG = "A cadeia processada eh aceita. \n";
+const std::string CHAIN_IS_NOT_ACCEPTED_MSG = "A cadeia processada nao eh aceita. \n";
 
 void TestDFAReader(MyList<AlphabetSymbol> *c, string arquivo)
 {

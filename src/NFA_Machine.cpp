@@ -123,22 +123,6 @@ int NFA_Machine::IndexOfSymbol(AlphabetSymbol* s)
     return OUT_OF_INDEX;
 }
 
-bool NFA_Machine::IsOnFinalState(NaryTree<Transition*>* processmentTree)
-{
-    int maxHeight = processmentTree->GetMaxHeight();
-    MyList<NaryTree_Node<Transition*>*> lastsStates = processmentTree->GetWithHeight(maxHeight);
-
-    for (int i = 0; i < lastsStates.Length(); i++)
-    {
-        if (lastsStates.At(i)->GetContent()->GetDestinationState()->IsAFinalState())
-        {
-            return true;
-        }
-    }
-
-    return false;
-}
-
 void NFA_Machine::ProcessSymbol(AlphabetSymbol sim, int iterationIndex, NaryTree<Transition*>* processmentTree)
 {
     AlphabetSymbol* symbolRef = new AlphabetSymbol(sim.GetValue());
