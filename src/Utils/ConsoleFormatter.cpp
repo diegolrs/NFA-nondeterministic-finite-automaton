@@ -11,7 +11,6 @@ void ConsoleFormatter::SetConsoleColor(int color)
 #if IS_ON_WINDOWS
     HANDLE console_color = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(console_color, color);
-    //SetConsoleColor_Windows(color);
 #endif
 }
 
@@ -19,11 +18,3 @@ void ConsoleFormatter::ResetConsoleColor()
 {
     SetConsoleColor(WHITE_CONSOLE_COLOR);
 }
-
-// void ConsoleFormatter::SetConsoleColor_Windows(int color)
-// {
-// #if IS_ON_WINDOWS
-//     HANDLE console_color = GetStdHandle(STD_OUTPUT_HANDLE);
-//     SetConsoleTextAttribute(console_color, color);
-// #endif
-// }
