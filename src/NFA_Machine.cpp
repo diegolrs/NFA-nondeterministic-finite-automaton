@@ -220,12 +220,12 @@ NaryTree<Transition*>* NFA_Machine::StartProcessment(NFA_Machine* machine, MyLis
     // Processing epsilon before initiate all symbols processing
     machine->ProcessEpsilon(firstEpsilonProcessingHeight, processmentTree);
     curInteration++;
-    
+
     // Processing all chain symbols
     for (int i = 0; i < chain->Length(); i++)
     {            
         machine->ProcessSymbol(chain->At(i).GetValue(), curInteration, processmentTree);
-        machine->ProcessEpsilon(curInteration, processmentTree);
+        machine->ProcessEpsilon(curInteration+1, processmentTree);
         curInteration++;
     }
 
