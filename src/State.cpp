@@ -24,7 +24,7 @@ void State::AddTransition(Transition* t)
     _transitions->Push(t);
 }
 
-std::string State::GetTransitionsStr()
+std::string State::ToString()
 {
     std::string s = "";
 
@@ -88,31 +88,4 @@ MyList<State*> State::ProcessSymbol(AlphabetSymbol s)
 MyList<State*> State::ProcessSymbol(AlphabetSymbol* s)
 {
     return ProcessSymbol(s->GetValue());
-}
-
-std::vector<State*> State::ProcessSymbol2(AlphabetSymbol* s)
-{
-    return this->ProcessSymbol2(AlphabetSymbol(s->GetValue()));
-}
-
-std::vector<State*> State::ProcessSymbol2(AlphabetSymbol s)
-{
-    std::vector<State*> states = std::vector<State*>();
-
-    for(int i = 0; i < _transitions->Length(); i++)
-    {
-        if (_transitions->At(i)->GetTransitionSymbol()->IsEquals(s))
-        {
-            states.push_back(_transitions->At(i)->GetDestinationState());
-        }
-    }
-
-    return states;
-}
-
-State* State::ProcessEpsilon()
-{
-    /* TODO: Add ProcessEpsilon Code*/
-    std::cout << "State->ProcessEpsilon() was not initialized" << std::endl;
-    return nullptr;
 }

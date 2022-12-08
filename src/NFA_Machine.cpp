@@ -83,7 +83,7 @@ std::string NFA_Machine::ToString()
     s += "\n\n-----Transitions-----\n";
     for(int i = 0; i < states->Length(); i++)
     {
-        s += states->At(i)->GetTransitionsStr();
+        s += states->At(i)->ToString();
     }
     s += '\n';
 

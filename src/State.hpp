@@ -14,23 +14,19 @@ class State
         State(std::string name, bool isAFinalState=false);
         std::string GetName();
         void AddTransition(Transition* t);
-        std::string GetTransitionsStr();
+        std::string ToString();
 
         bool IsAFinalState();
-
         bool IsEquals(State other);
         bool IsEquals(State* other);
 
         bool CanProcessSymbol(AlphabetSymbol s);
         bool CanProcessSymbol(AlphabetSymbol* s);
+
         MyList<State*> ProcessSymbol(AlphabetSymbol s);
         MyList<State*> ProcessSymbol(AlphabetSymbol* s);
-        std::vector<State*> ProcessSymbol2(AlphabetSymbol s);
-        std::vector<State*> ProcessSymbol2(AlphabetSymbol* s);
-        State* ProcessEpsilon();
     private:
         std::string _name;
         bool _isAFinalState;
-        MyList<Transition*>* _transitions;
-        
+        MyList<Transition*>* _transitions;      
 };
