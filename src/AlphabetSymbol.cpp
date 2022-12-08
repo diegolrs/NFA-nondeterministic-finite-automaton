@@ -30,8 +30,3 @@ bool AlphabetSymbol::IsEquals(AlphabetSymbol* s)
 {
     return _value == s->GetValue();
 }
-
-bool AlphabetSymbol::operator==(AlphabetSymbol other)
-{
-    return (this->GetValue() == other.GetValue());
-}

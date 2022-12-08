@@ -9,11 +9,10 @@ class AlphabetSymbol
         AlphabetSymbol(std::string value); // Start as a value
 
         std::string GetValue();
+        
         bool IsEpsilon();
-
         bool IsEquals(AlphabetSymbol s);
         bool IsEquals(AlphabetSymbol* s);
-        bool operator==(AlphabetSymbol other);
     private:
         std::string _value;
 };
