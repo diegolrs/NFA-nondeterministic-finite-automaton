@@ -9,6 +9,15 @@ void NFA_Printer::PrintProcessmentTree(NaryTree<Transition*>* processmentTree)
     crashedsChains = processmentTree->GetWithHeight(NFA_Machine::CRASH_STATE_HEIGHT);
     finishedsChains = processmentTree->GetWithHeight(processmentTree->GetMaxHeight());
 
+    // Avoid to print a state that was crashed on the last symbol processing
+    for(int i = finishedsChains.Length() -1; i >= 0; i--)
+    {
+        if(!finishedsChains.At(i)->GetContent()->GetDestinationState()->IsAFinalState())
+        {
+            finishedsChains.RemoveAt(i);
+        }
+    }
+
     std::cout << "-----Processment-----";
     PrintProcessmentList(crashedsChains);
     PrintProcessmentList(finishedsChains);
