@@ -221,7 +221,7 @@ void NFA_Machine::EndProcessment(int lastIterationIndex, NaryTree<Transition*>* 
             continue;
         }
 
-        Transition* _chainProcessed = new Transition(crashState, new AlphabetSymbol());
+        Transition* _chainProcessed = new Transition(crashState, nullptr);
         processmentTree->AddLeaf(_chainProcessed, node, CRASH_STATE_HEIGHT);
     }
 }

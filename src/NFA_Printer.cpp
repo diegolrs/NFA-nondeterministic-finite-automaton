@@ -58,6 +58,8 @@ void NFA_Printer::PrintProcessmentList(MyList<NaryTree_Node<Transition*>*> node)
 
             if(symbol != nullptr)
                 std::cout << " -> " << symbol->GetValue() << " -> " ;
+            else
+                std:: cout << " -> "; // crash
 
             std::cout << _transition->GetDestinationState()->GetName();
         }
