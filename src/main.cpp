@@ -53,7 +53,7 @@ int main()
 
         NFA_ReadedData dataReadedFromFile =  NFA_FileReader::ReadFile(fileName);
         NFA_Machine* machine = new NFA_Machine(dataReadedFromFile);
-        NaryTree<Transition*>* processmentTree = machine->StartProcessment(machine, chainToProcess);
+        NaryTree<Transition*>* processmentTree = machine->StartProcessment(chainToProcess);
 
         cout << machine->ToString();
         NFA_Printer::PrintProcessmentTree(processmentTree);

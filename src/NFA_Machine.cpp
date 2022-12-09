@@ -226,7 +226,7 @@ void NFA_Machine::EndProcessment(int lastIterationIndex, NaryTree<Transition*>* 
     }
 }
 
-NaryTree<Transition*>* NFA_Machine::StartProcessment(NFA_Machine* machine, MyList<AlphabetSymbol> *chain)
+NaryTree<Transition*>* NFA_Machine::StartProcessment(MyList<AlphabetSymbol> *chain)
 {
     NaryTree<Transition*>* processmentTree = new NaryTree<Transition*>();
 
@@ -235,14 +235,14 @@ NaryTree<Transition*>* NFA_Machine::StartProcessment(NFA_Machine* machine, MyLis
     processmentTree->AddLeaf(new Transition(initialState, nullptr), nullptr, curIteration);
 
     // Processing epsilon before initiate all symbols processing
-    machine->ProcessEpsilon(curIteration, processmentTree);
+    this->ProcessEpsilon(curIteration, processmentTree);
     curIteration++;
 
     // Processing all chain symbols
     for (int i = 0; i < chain->Length(); i++)
     {            
-        machine->ProcessSymbol(chain->At(i).GetValue(), curIteration, processmentTree);
-        machine->ProcessEpsilon(curIteration, processmentTree);
+        this->ProcessSymbol(chain->At(i).GetValue(), curIteration, processmentTree);
+        this->ProcessEpsilon(curIteration, processmentTree);
         curIteration++;
     }
 
