@@ -18,7 +18,7 @@ class NFA_Machine
         NFA_Machine(NFA_ReadedData data);
 
         std::string ToString();
-        NaryTree<Transition*>* StartProcessment(NFA_Machine* machine, MyList<AlphabetSymbol> *chain);
+        NaryTree<Transition*>* StartProcessment(MyList<AlphabetSymbol> *chain);
     private:
         const std::string CRASH_STATUS_NAME = "CRASH";
 
