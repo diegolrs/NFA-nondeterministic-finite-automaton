@@ -1,11 +1,9 @@
 # Nondeterministic finite automaton simulator
 
-<!--
 <p align="center">
   <img width="15%" height="15%" src="res/ci-logo.png">
   <img width="15%" height="15%" src="res/ufpb-logo.png">
 </p>
--->
 
 NFA (nondeterministic finite automaton) simulator using C++. This project was used as the Computer Theory's class final project at the Federal University of Paraiba (UFPB), at the request of the professor Bruno Petrato Bruck, from the Scientific Computer Departament (DCC) of the Informatics Center (CI), UFPB.
 
