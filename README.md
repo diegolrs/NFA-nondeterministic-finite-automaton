@@ -1,7 +1,16 @@
 # Nondeterministic finite automaton simulator
+
+<p align="center">
+  <img width="14%" height="14%" src="res/ci-logo.png">
+  <img width="14%" height="14%" src="res/ufpb-logo.png">
+</p>
+
 NFA (nondeterministic finite automaton) simulator using C++. This project was used as the Computer Theory's class final project at the Federal University of Paraiba (UFPB), at the request of the professor Bruno Petrato Bruck, from the Scientific Computer Departament (DCC) of the Informatics Center (CI), UFPB.
 
 # How to create an automaton:
+<p align="center">
+  <img width="80%" height="80%" src="res/automaton-image.png">
+</p>
 
 ## Save an NFA in a txt file with the following format:
 - Alphabet (default label is "alfabeto")
