@@ -35,4 +35,5 @@ class NFA_Machine
 
         void ProcessSymbol(AlphabetSymbol sim, int iterationIndex, NaryTree<Transition*>* processmentTree);
         void ProcessEpsilon(int iterationInde, NaryTree<Transition*>* processmentTreex);
+        void EndProcessment(int lastIterationIndex, NaryTree<Transition*>* processmentTree); // Crash states that are not a final state
 };

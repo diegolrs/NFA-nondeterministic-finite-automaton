@@ -206,6 +206,26 @@ void NFA_Machine::ProcessEpsilon(int iterationIndex, NaryTree<Transition*>* proc
     }
 }
 
+// Crash states that are not a final state
+void NFA_Machine::EndProcessment(int lastIterationIndex, NaryTree<Transition*>* processmentTree)
+{
+    MyList<NaryTree_Node<Transition*>*> currentEnabledStates = processmentTree->GetWithHeight(lastIterationIndex);
+
+    for(int i = 0; i < currentEnabledStates.Length(); i++)
+    {
+        NaryTree_Node<Transition*>* node = currentEnabledStates.At(i);
+        State* currentState = node->GetContent()->GetDestinationState();
+
+        if (currentState->IsAFinalState())
+        {
+            continue;
+        }
+
+        Transition* _chainProcessed = new Transition(crashState, new AlphabetSymbol());
+        processmentTree->AddLeaf(_chainProcessed, node, CRASH_STATE_HEIGHT);
+    }
+}
+
 NaryTree<Transition*>* NFA_Machine::StartProcessment(NFA_Machine* machine, MyList<AlphabetSymbol> *chain)
 {
     NaryTree<Transition*>* processmentTree = new NaryTree<Transition*>();
@@ -225,6 +245,9 @@ NaryTree<Transition*>* NFA_Machine::StartProcessment(NFA_Machine* machine, MyLis
         machine->ProcessEpsilon(curIteration, processmentTree);
         curIteration++;
     }
+
+    // Crash states that are not a final state
+    EndProcessment(curIteration-1, processmentTree);
 
     return processmentTree;
 }
