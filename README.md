@@ -1,25 +1,25 @@
 # Nondeterministic finite automaton simulator
 
+<!--
 <p align="center">
-  <img width="14%" height="14%" src="res/ci-logo.png">
-  <img width="14%" height="14%" src="res/ufpb-logo.png">
+  <img width="15%" height="15%" src="res/ci-logo.png">
+  <img width="15%" height="15%" src="res/ufpb-logo.png">
 </p>
+-->
 
 NFA (nondeterministic finite automaton) simulator using C++. This project was used as the Computer Theory's class final project at the Federal University of Paraiba (UFPB), at the request of the professor Bruno Petrato Bruck, from the Scientific Computer Departament (DCC) of the Informatics Center (CI), UFPB.
 
-# How to create an automaton:
+- # How to create an automaton:
 <p align="center">
   <img width="80%" height="80%" src="res/automaton-image.png">
 </p>
 
-## Save an NFA in a txt file with the following format:
-- Alphabet (default label is "alfabeto")
-- States (default label is "estados")
-- Initial State (default label is "inicial")
-- End States (default label is "final")
-- Transitions (default label is "transicoes")
-
-> ### (Note: all the default labels can be changed at the source file "NFA_FileReader.hpp").
+  - ## Save an NFA in a txt file with the following format:
+    - Alphabet (default label is "alfabeto")
+    - States (default label is "estados")
+    - Initial State (default label is "inicial")
+    - End States (default label is "final")
+    - Transitions (default label is "transicoes")
 
 ## Example: <br>
     alfabeto=0,1
@@ -43,23 +43,29 @@ NFA (nondeterministic finite automaton) simulator using C++. This project was us
     q1,q1,b
     q1,q2,b
 
-# How to build the program:
--  ## Make sure your computer has g++ compiler (g++ version 6.3.0 or above)
--  ## Open the project directory on cmd
--  ## Run the following command to compile the program: 
+> ### (Note: all the default labels can be changed at the source file "NFA_FileReader.hpp").
+
+- # How to build the program:
+  -  ## Make sure your computer has g++ compiler (g++ version 6.3.0 or above)
+  -  ## Open the project directory on cmd
+  -  ## Run the following command to compile the program: 
            g++ src/Exceptions/*.cpp src/Utils/*.cpp src/*.cpp -o program
            
-# How to run the program:
--  ## Use this on terminal to run the program on linux and mac:
+- # How to run the program:
+  -  ## Use this on terminal to run the program on linux and mac:
            ./program
--  ## Use this on terminal to run the program on windows:
+  -  ## Use this on terminal to run the program on windows:
            program
--  ## Type the input file name. Example:
-            nfa-created.txt
- -  ## Type the chain to process. Example:
-            aabba
+  -  ## Type the input file name. Example:
+            4b.txt
+  -  ## Type the chain to process. Example:
+            11011
 
->  ### (Note: if you want to process an empty chain, you just need to press enter when the chain is requested.").
+<p align="center">
+  <img width="65%" height="65%" src="res/output.png">
+</p>
+
+>  ### (Note: if you want to process an empty chain, you just need to press enter when the chain is requested).
 
 # Authors
 
