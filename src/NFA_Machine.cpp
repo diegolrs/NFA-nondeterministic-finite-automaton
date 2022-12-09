@@ -129,22 +129,22 @@ void NFA_Machine::ProcessSymbol(AlphabetSymbol sim, int iterationIndex, NaryTree
     MyList<NaryTree_Node<Transition*>*> current = processmentTree->GetWithHeight(iterationIndex-1);
 
     NaryTree_Node<Transition*>* node;
-    State* oldState;
+    State* currentState;
 
     for(int i = 0; i < current.Length(); i++)
     {
         node = current.At(i);
-        oldState = node->GetContent()->GetDestinationState();
+        currentState = node->GetContent()->GetDestinationState();
 
         // Trying to process crashed state
-        if (oldState->IsEquals(crashState))
+        if (currentState->IsEquals(crashState))
         {
             continue;
         }
 
-        if(oldState->CanProcessSymbol(sim))
+        if(currentState->CanProcessSymbol(sim))
         {
-            MyList<State*> _states = oldState->ProcessSymbol(sim);
+            MyList<State*> _states = currentState->ProcessSymbol(sim);
 
             for (int j = 0; j < _states.Length(); j++)
             {
@@ -179,7 +179,7 @@ bool NFA_Machine::IsACurrentState(State* s, NaryTree<Transition*>* processmentTr
 void NFA_Machine::ProcessEpsilon(int iterationIndex, NaryTree<Transition*>* processmentTree)
 {
     AlphabetSymbol* epsilon = new AlphabetSymbol();
-    MyList<NaryTree_Node<Transition*>*> current = processmentTree->GetWithHeight(iterationIndex-1);
+    MyList<NaryTree_Node<Transition*>*> current = processmentTree->GetWithHeight(iterationIndex);
 
     for(int i = 0; i < current.Length(); i++)
     {
@@ -211,22 +211,19 @@ NaryTree<Transition*>* NFA_Machine::StartProcessment(NFA_Machine* machine, MyLis
     NaryTree<Transition*>* processmentTree = new NaryTree<Transition*>();
 
     // Adding initial state
-    processmentTree->AddLeaf(new Transition(initialState, nullptr), nullptr, 0);
-
-    int maxInterations = chain->Length();
-    int curInteration = 0;
-    int firstEpsilonProcessingHeight = 1;
+    int curIteration = 0;
+    processmentTree->AddLeaf(new Transition(initialState, nullptr), nullptr, curIteration);
 
     // Processing epsilon before initiate all symbols processing
-    machine->ProcessEpsilon(firstEpsilonProcessingHeight, processmentTree);
-    curInteration++;
+    machine->ProcessEpsilon(curIteration, processmentTree);
+    curIteration++;
 
     // Processing all chain symbols
     for (int i = 0; i < chain->Length(); i++)
     {            
-        machine->ProcessSymbol(chain->At(i).GetValue(), curInteration, processmentTree);
-        machine->ProcessEpsilon(curInteration+1, processmentTree);
-        curInteration++;
+        machine->ProcessSymbol(chain->At(i).GetValue(), curIteration, processmentTree);
+        machine->ProcessEpsilon(curIteration, processmentTree);
+        curIteration++;
     }
 
     return processmentTree;
