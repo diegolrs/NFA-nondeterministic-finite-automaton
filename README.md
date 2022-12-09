@@ -1,5 +1,5 @@
-# NFA-nondeterministic-finite-automaton-
-NFA (nondeterministic finite automaton) simulation using C++
+# Nondeterministic finite automaton simulator
+NFA (nondeterministic finite automaton) simulator using C++
 
 ## Build program
 
